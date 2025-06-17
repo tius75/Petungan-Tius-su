@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Kategori Pilihan</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background-color: #f4f4f4;
+    }
+
+    .links-section h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    .category-link {
+      position: relative;
+      text-align: center;
+      width: calc(50% - 10px);
+      cursor: pointer;
+    }
+
+    .category-icon {
+      padding: 15px;
+      border-radius: 8px;
+      font-weight: bold;
+      color: #fff;
+      background-color: #555;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    }
+
+    .icon-jawa { background-color: #28a745; }
+    .icon-chines { background-color: #dc3545; }
+    .icon-modern { background-color: #ffc107; color: #000; }
+    .icon-ajaran { background-color: #007bff; }
+
+    .sub-menu {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #fff;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      z-index: 2;
+      width: max-content;
+    }
+
+    .category-link.active .sub-menu {
+      display: block;
+    }
+
+    .sub-menu a {
+      display: block;
+      padding: 8px 12px;
+      color: #333;
+      text-decoration: none;
+      font-size: 14px;
+    }
+
+    .sub-menu a:hover {
+      background-color: #eee;
+    }
+
+    @media screen and (max-width: 480px) {
+      .category-link {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="links-section">
+    <h2>Kategori Pilihan</h2>
+    <div class="container">
+
+      <!-- Hitungan Jawa -->
+      <div class="category-link">
+        <div class="category-icon icon-jawa">Hitungan Jawa</div>
+        <div class="sub-menu">
+                    <a href="https://www.jawaspiritual.my.id/meditasi-dan-afirmasi">Afirmasi & Meditasi</a>
+          <a href="https://www.jawaspiritual.my.id/hitungan-jawa/hitung-rejeki">Hitung Rejeki</a>
+          <a href="https://www.jawaspiritual.my.id/hitungan-jawa/hitung-nama">Hitung Nama</a>
+          <a href="https://www.jawaspiritual.my.id/hitungan-jawa/wuku-hari-dan-pasaran">Wuku Hari & Pasaran</a>
+          <a href="https://www.jawaspiritual.my.id/hitungan-jawa/keris-by-wuku">Keris By Wuku</a>
+          <a href="https://www.jawaspiritual.my.id/hitungan-jawa/hari-naas">Hari Naas</a>
+          <a href="https://www.jawaspiritual.my.id/hitungan-jawa/cek-weton">Cek Weton</a>
+          <a href="https://www.jawaspiritual.my.id/hitungan-jawa/hari-baik">Hari Baik</a>
+          <a href="https://www.jawaspiritual.my.id/hitungan-jawa/sifat-manusia">Sifat Manusia</a>
+          <a href="https://www.jawaspiritual.my.id/hitungan-jawa/sinonim-asra-jawa">Sinonim Aksara Jawa</a>
+          <a href="https://www.jawaspiritual.my.id/hitungan-jawa/hitung-pancatan">Hitung Pancatan</a>
+          <a href="https://www.jawaspiritual.my.id/hitungan-jawa/watak-hari">Watak Hari</a>
+          <a href="https://www.jawaspiritual.my.id/hitungan-jawa/hitung-neptu-orang-meninggal">Neptu Orang Meninggal</a>
+          <a href="https://www.jawaspiritual.my.id/hitungan-jawa/lihat-mangsa-wuku">Mangsa Wuku</a>
+          <a href="https://www.jawaspiritual.my.id/hitungan-jawa/ramal-usia">Ramal Usia</a>
+          <a href="https://www.jawaspiritual.my.id/hitungan-jawa/sifat-hari-dan-pasaran">Sifat Hari</a>
+          <a href="https://www.jawaspiritual.my.id/hitungan-jawa/wuku-dan-hari-pasaran">Wuku & Hari</a>
+          <a href="https://www.jawaspiritual.my.id/hitungan-jawa/obat-herbal-sp">Obat Herbal</a>
+          <a href="https://www.jawaspiritual.my.id/hitungan-jawa/arah-rumah">Arah Rumah</a>
+          <a href="https://www.jawaspiritual.my.id/hitungan-jawa/hitung-jodoh">Hitung Jodoh</a>
+          <a href="https://www.jawaspiritual.my.id/hitungan-jawa/hari-larangan">Hari Larangan</a>
+          <a href="https://www.jawaspiritual.my.id/hitungan-jawa/hitung-energy">Hitung Energy</a>
+          <a href="https://www.jawaspiritual.my.id/hitungan-jawa/angka-hoki">Arti Angka</a>
+          <a href="https://www.jawaspiritual.my.id/hitungan-jawa/kalender-super">Kalender</a>
+          <a href="https://www.jawaspiritual.my.id/hitungan-chines/hitung-selamatan-orang-meninggal">Hitung Selametan</a>
+
+        </div>
+      </div>
+
+      <!-- Hitungan China -->
+      <div class="category-link">
+        <div class="category-icon icon-chines">Hitungan China</div>
+        <div class="sub-menu">
+                    <a href="https://www.jawaspiritual.my.id/hitungan-chines/angka-hoki-shio">Angka Hoki</a>
+          <a href="https://www.jawaspiritual.my.id/hitungan-chines/hitung-hari-sembayang-chines">Hari Sembayang</a>
+          <a href="https://www.jawaspiritual.my.id/hitungan-chines/shio">Shio</a>
+          <a href="https://www.jawaspiritual.my.id/hitungan-chines/fengshui-arah-rumah">Arah Rumah</a>
+          <a href="https://www.jawaspiritual.my.id/meditasi-dan-afirmasi">Meditasi</a>
+
+        </div>
+      </div>
+
+      <!-- Modern -->
+      <div class="category-link">
+        <div class="category-icon icon-modern">Modern</div>
+        <div class="sub-menu">
+                    <a href="https://www.jawaspiritual.my.id/hitungan-modern/ramalan-mesir-kuno">Ramalan Mesir</a>
+          <a href="https://www.jawaspiritual.my.id/hitungan-modern/human-design">Human Design</a>
+          <a href="https://www.jawaspiritual.my.id/hitungan-modern/zodiak">Zodia</a>
+          <a href="https://www.jawaspiritual.my.id/hitungan-modern/numerogi">Numerogi</a>
+          <a href="https://www.jawaspiritual.my.id/hitungan-modern/numologi-dan-zodiak">Numerogi & Zodia</a>
+
+        </div>
+      </div>
+
+      <!-- Ajaran Luhur -->
+      <div class="category-link">
+        <div class="category-icon icon-ajaran">Ajaran Luhur</div>
+        <div class="sub-menu">
+                    <a href="https://www.jawaspiritual.my.id/ajaran-jawa/jenis-bunga-untuk-jamasan">Bunga Jamasan</a>
+          <a href="https://www.jawaspiritual.my.id/ajaran-jawa/sejatinya-manusia">Sejatinya Manusia</a>
+          <a href="https://www.jawaspiritual.my.id/ajaran-jawa/horoskop-pranata-mangsa">Horoscop Pranata Mangsa</a>
+          <a href="https://www.jawaspiritual.my.id/ajaran-jawa/arah-rumah-by-weton">Arah Rumah Weton</a>
+          <a href="https://www.jawaspiritual.my.id/ajaran-jawa/jiwa-roh-sukma">Jiwa Roh Sukma</a>
+          <a href="https://www.jawaspiritual.my.id/ajaran-jawa/sifat-bima">Sifat Bima</a>
+          <a href="https://www.jawaspiritual.my.id/ajaran-jawa/hari-baik-bangun-rumah">Hari Baik Bangun Rumah</a>
+          <a href="https://www.jawaspiritual.my.id/ajaran-jawa/arti-angka">Arti Angka</a>
+          <a href="https://www.jawaspiritual.my.id/ajaran-jawa/buku-ajaran-jawa">Buku Ajaran Jawa</a>
+          <a href="https://www.jawaspiritual.my.id/ajaran-jawa/memayu-hayuni-bawono">Memayu Hayuni Bawono</a>
+          <a href="https://www.jawaspiritual.my.id/ajaran-jawa/aksara-jawa">Aksara Jawa</a>
+          <a href="https://www.jawaspiritual.my.id/ajaran-jawa/ajaran-jawa-tinarbuka">Ajaran Tinarbuka</a>
+          <a href="https://www.jawaspiritual.my.id/ajaran-jawa/arti-bahasa-eupa-sesaji">Bahasa Rupa Sesaji</a>
+          <a href="https://www.jawaspiritual.my.id/ajaran-jawa/arti-nama-semar">Arti Nmaa Semar</a>
+          <a href="https://www.jawaspiritual.my.id/ajaran-jawa/buku-tpk">Buku TPK</a>
+          <a href="https://www.jawaspiritual.my.id/ajaran-jawa/buku-semar">Buku Semar</a>
+          <a href="https://www.jawaspiritual.my.id/ajaran-jawa/asal-usul-hari">Asal Usul Hari</a>
+          <a href="https://www.jawaspiritual.my.id/ajaran-jawa/asal-usul-semar">Asal Usul Semar</a>
+          <a href="https://www.jawaspiritual.my.id/ajaran-jawa/pranata-mangsa">Pranata Mangsa</a>
+          <a href="https://www.jawaspiritual.my.id/ajaran-jawa/horoskop-pm">Horoscop PM</a>
+          <a href="https://www.jawaspiritual.my.id/ajaran-jawa/jawa-kawedar">Jawa Kawedar</a>
+          <a href="https://www.jawaspiritual.my.id/ajaran-jawa/luhuring-budi">Luhurin Budi</a>
+          <a href="https://www.jawaspiritual.my.id/ajaran-jawa/manunggaling">Manunggaling</a>
+          <a href="https://www.jawaspiritual.my.id/ajaran-jawa/manungso">Manungso</a>
+          <a href="https://www.jawaspiritual.my.id/ajaran-jawa/meditasi-jawakuna">Meditasi Jawa Kuna</a>
+          <a href="https://www.jawaspiritual.my.id/ajaran-jawa/meditasi-samaji">Meditasi Samaji</a>
+          <a href="https://www.jawaspiritual.my.id/ajaran-jawa/memayu">Memayu</a>
+          <a href="https://www.jawaspiritual.my.id/ajaran-jawa/menghitung-nama">Menghitung Nama</a>
+          <a href="https://www.jawaspiritual.my.id/ajaran-jawa/tahun-saka-2029">Tahun Saka</a>
+          <a href="https://www.jawaspiritual.my.id/ajaran-jawa/naga-dino">Naga Dina</a>
+          <a href="https://www.jawaspiritual.my.id/ajaran-jawa/hantogo">Hantogo</a>
+          <a href="https://www.jawaspiritual.my.id/ajaran-jawa/pranoto-mongso-a5">Pranoto Mongso A5</a>
+          <a href="https://www.jawaspiritual.my.id/ajaran-jawa/petung-jawa">Petung Jawa</a>
+           <a href="https://www.jawaspiritual.my.id/ajaran-jawa/sangkan-pd">Sangkan PD</a>
+           <a href="https://www.jawaspiritual.my.id/ajaran-jawa/sastra-gendhing">Sastra Gendhing</a>
+          <a href="#">Makna Arah & Hari</a>
+         
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    // Toggle submenu
+    document.querySelectorAll('.category-link').forEach(link => {
+      link.addEventListener('click', function (e) {
+        e.stopPropagation();
+        document.querySelectorAll('.category-link').forEach(item => {
+          if (item !== link) item.classList.remove('active');
+        });
+        link.classList.toggle('active');
+      });
+    });
+
+    // Close submenu when clicking outside
+    document.addEventListener('click', function () {
+      document.querySelectorAll('.category-link').forEach(item => {
+        item.classList.remove('active');
+      });
+    });
+  </script>
+
+</body>
+</html>

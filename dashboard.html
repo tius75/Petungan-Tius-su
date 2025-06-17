@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Berita - Petungan Jawa</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
+    <script>
+        const firebaseConfig = {
+          apiKey: "AIzaSyBOqC3MOxTPOabaKUtCPrmcIO8VvPDp5YA",
+          authDomain: "suhu-tius.firebaseapp.com",
+          projectId: "suhu-tius",
+          storageBucket: "suhu-tius.appspot.com",
+          messagingSenderId: "227886067791",
+          appId: "1:227886067791:web:f97f4bd58cc0b8c121ba3a"
+        };
+        firebase.initializeApp(firebaseConfig);
+
+        firebase.auth().onAuthStateChanged(function(user) {
+            if (!user) {
+                // Jika tidak ada user yang login, paksa kembali ke halaman login
+                console.log("Tidak ada user, mengarahkan ke login.html");
+                window.location.href = 'login.html';
+            }
+        });
+    </script>
+    
+    <style>
+        body { font-family: 'Roboto', sans-serif; margin: 0; background-color: #f4f7f6; color: #333; }
+        .container { max-width: 1000px; margin: 20px auto; padding: 20px; background-color: #fff; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        h1 { text-align: center; color: #2c3e50; }
+        .controls { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; margin-bottom: 20px; gap: 10px; }
+        .button { display: inline-block; padding: 10px 20px; color: white; text-decoration: none; border-radius: 5px; border: none; font-family: 'Roboto', sans-serif; font-size: 1em; cursor: pointer; }
+        .add-btn { background-color: #3498db; }
+        .footer-btn { background-color: #9b59b6; }
+        .logout-btn { background-color: #e74c3c; }
+        .news-table { width: 100%; border-collapse: collapse; }
+        .news-table th, .news-table td { border: 1px solid #ddd; padding: 12px; text-align: left; }
+        .news-table th { background-color: #ecf0f1; }
+        .actions a, .actions button { text-decoration: none; padding: 6px 10px; border-radius: 4px; margin-right: 5px; font-size: 0.9em; color: #fff; border: none; cursor: pointer; }
+        .edit-btn { background-color: #f1c40f; }
+        .delete-btn { background-color: #e74c3c; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Dashboard Manajemen Berita</h1>
+        <div class="controls">
+            <div>
+                <a href="cms-fix.html" class="button add-btn">Tambah Berita Baru</a>
+                <a href="footer-editor.html" class="button footer-btn">Kelola Menu Footer</a>
+            </div>
+            <button id="logout-btn" class="button logout-btn">Logout</button>
+        </div>
+        <table class="news-table">
+            <thead>
+                <tr>
+                    <th>Judul Berita</th>
+                    <th>Kategori</th>
+                    <th>Tanggal Publikasi</th>
+                    <th>Aksi</th>
+                </tr>
+            </thead>
+            <tbody id="news-list-body">
+                <tr><td colspan="4" style="text-align:center;">Memuat berita...</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore-compat.js"></script>
+    <script>
+        // Inisialisasi Firestore
+        const db = firebase.firestore();
+
+        async function loadNews() {
+            const tbody = document.getElementById('news-list-body');
+            tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;">Memuat berita...</td></tr>';
+
+            const snapshot = await db.collection('berita').orderBy('createdAt', 'desc').get();
+            if (snapshot.empty) {
+                tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;">Belum ada berita.</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = '';
+            snapshot.forEach(doc => {
+                const news = doc.data();
+                const date = news.createdAt ? news.createdAt.toDate().toLocaleDateString('id-ID') : 'N/A';
+                const row = `
+                    <tr>
+                        <td>${news.title}</td>
+                        <td>${news.category}</td>
+                        <td>${date}</td>
+                        <td class="actions">
+                            <a href="cms-fix.html?editId=${doc.id}" class="edit-btn">Edit</a>
+                            <button class="delete-btn" data-id="${doc.id}">Hapus</button>
+                        </td>
+                    </tr>
+                `;
+                tbody.innerHTML += row;
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            loadNews();
+
+            // Listener untuk tombol hapus berita
+            document.getElementById('news-list-body').addEventListener('click', function(e) {
+                if (e.target && e.target.classList.contains('delete-btn')) {
+                    const docId = e.target.getAttribute('data-id');
+                    if (confirm('Apakah Anda yakin ingin menghapus berita ini secara permanen?')) {
+                        db.collection('berita').doc(docId).delete()
+                            .then(() => {
+                                alert('Berita berhasil dihapus!');
+                                loadNews();
+                            })
+                            .catch(error => {
+                                alert('Gagal menghapus berita: ' + error.message);
+                            });
+                    }
+                }
+            });
+
+            // --- FUNGSI BARU UNTUK LOGOUT ---
+            const logoutButton = document.getElementById('logout-btn');
+            if(logoutButton) {
+                logoutButton.addEventListener('click', () => {
+                    if (confirm('Apakah Anda yakin ingin keluar?')) {
+                        firebase.auth().signOut().then(() => {
+                            alert('Anda berhasil logout.');
+                            window.location.href = 'login.html'; // Arahkan kembali ke halaman login
+                        }).catch((error) => {
+                            console.error('Gagal logout:', error);
+                        });
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

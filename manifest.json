@@ -1,0 +1,21 @@
+{
+  "name": "Petungan Jawa",
+  "short_name": "Petungan",
+  "description": "Aplikasi untuk mempelajari Petungan Jawa dan primbon.",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#2c3e50",
+  "icons": [
+    {
+      "src": "logo.png",
+      "type": "image/png",
+      "sizes": "128x128"
+    },
+    {
+      "src": "logo.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ]
+}

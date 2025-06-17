@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login / Daftar - Petungan Jawa</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f4f7f6;
+            margin: 0;
+        }
+        .login-card {
+            background: #fff;
+            padding: 30px 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 350px;
+            box-sizing: border-box;
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-top: 0;
+            margin-bottom: 25px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #555;
+        }
+        input {
+            width: 100%;
+            padding: 12px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            background: #3498db;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: 500;
+            transition: background-color 0.2s;
+        }
+        button:hover {
+            background: #2980b9;
+        }
+        #error-message {
+            color: #e74c3c;
+            margin-top: 15px;
+            text-align: center;
+            font-size: 0.9em;
+            min-height: 1.2em;
+        }
+        .toggle-form {
+            text-align: center;
+            margin-top: 15px;
+            font-size: 0.9em;
+        }
+        .toggle-form a {
+            color: #3498db;
+            cursor: pointer;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .toggle-form a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="login-card">
+        <h1 id="form-title">Login</h1>
+        <form id="auth-form">
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" required>
+            </div>
+            <button type="submit" id="submit-button">Login</button>
+            <p id="error-message"></p>
+        </form>
+        <div class="toggle-form">
+            <p id="toggle-text">Belum punya akun? <a id="toggle-link">Daftar di sini</a></p>
+        </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
+    <script>
+        const firebaseConfig = {
+          apiKey: "AIzaSyBOqC3MOxTPOabaKUtCPrmcIO8VvPDp5YA",
+          authDomain: "suhu-tius.firebaseapp.com",
+          projectId: "suhu-tius",
+          storageBucket: "suhu-tius.appspot.com",
+          messagingSenderId: "227886067791",
+          appId: "1:227886067791:web:f97f4bd58cc0b8c121ba3a"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+
+        const authForm = document.getElementById('auth-form');
+        const emailInput = document.getElementById('email');
+        const passwordInput = document.getElementById('password');
+        const errorMessage = document.getElementById('error-message');
+        const toggleText = document.getElementById('toggle-text');
+        const formTitle = document.getElementById('form-title');
+        const submitButton = document.getElementById('submit-button');
+        let isLoginMode = true;
+
+        function setupToggle() {
+            const toggleLink = document.getElementById('toggle-link');
+            toggleLink.addEventListener('click', () => {
+                isLoginMode = !isLoginMode;
+                formTitle.textContent = isLoginMode ? 'Login' : 'Daftar Akun Baru';
+                submitButton.textContent = isLoginMode ? 'Login' : 'Daftar';
+                toggleText.innerHTML = isLoginMode ? 'Belum punya akun? <a id="toggle-link">Daftar di sini</a>' : 'Sudah punya akun? <a id="toggle-link">Login di sini</a>';
+                errorMessage.textContent = ''; // Hapus pesan error saat beralih
+                setupToggle(); // Atur ulang listener untuk link yang baru dibuat
+            });
+        }
+        setupToggle(); // Panggil fungsi saat pertama kali halaman dimuat
+
+        authForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = emailInput.value;
+            const password = passwordInput.value;
+            errorMessage.textContent = '';
+
+            if (isLoginMode) {
+                // Proses Login
+                auth.signInWithEmailAndPassword(email, password)
+                    .then(userCredential => {
+                        // Jika sukses, arahkan ke halaman dashboard
+                        window.location.href = 'dashboard.html';
+                    })
+                    .catch(error => {
+                        errorMessage.textContent = 'Gagal login. Periksa email dan password Anda.';
+                        console.error(error.message);
+                    });
+            } else {
+                // Proses Daftar
+                auth.createUserWithEmailAndPassword(email, password)
+                    .then(userCredential => {
+                        alert('Akun berhasil dibuat! Anda akan dialihkan ke dashboard.');
+                        // Jika sukses, arahkan ke halaman dashboard
+                        window.location.href = 'dashboard.html';
+                    })
+                    .catch(error => {
+                        errorMessage.textContent = 'Gagal mendaftar: ' + error.message;
+                        console.error(error.message);
+                    });
+            }
+        });
+    </script>
+</body>
+</html>

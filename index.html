@@ -1,0 +1,253 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Index Berita - Petungan Jawa</title>
+    <meta name="theme-color" content="#2c3e50"/>
+<link rel="manifest" href="manifest.json">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <style>
+        :root {
+            --primary-font: 'Roboto', sans-serif; --heading-font: 'Merriweather', serif;
+            --text-color: #333; --background-color: #f4f4f4; --header-bg: #fff;
+            --footer-bg: #fff; --card-bg: #fff; --border-color: #e0e0e0; --accent-color: #8B4513;
+        }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: var(--primary-font); margin: 0; background-color: var(--background-color); color: var(--text-color);
+            padding-top: 70px; padding-bottom: 80px;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 15px; }
+        a { text-decoration: none; color: inherit; }
+        img { max-width: 100%; height: auto; display: block; }
+        .site-header {
+            display: flex; align-items: center; justify-content: center; padding: 10px 15px;
+            background-color: var(--header-bg); box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            position: fixed; top: 0; left: 0; right: 0; z-index: 1000; height: 50px;
+        }
+        .site-header .logo { width: 40px; height: 40px; margin-right: 12px; }
+        .site-header .site-title { font-family: var(--heading-font); font-size: 1.5rem; font-weight: 700; margin: 0; }
+        
+        /* CSS BARU UNTUK FITUR PENCARIAN */
+        .search-container {
+            background-color: #fff; padding: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            display: none; /* Awalnya tersembunyi */
+            position: fixed; top: 70px; left: 0; right: 0; z-index: 999;
+        }
+        .search-container form { display: flex; gap: 10px; }
+        .search-container input { flex-grow: 1; border: 1px solid #ddd; padding: 10px; border-radius: 5px; }
+        .search-container button { border: none; background-color: var(--accent-color, #8B4513); color: white; padding: 0 20px; border-radius: 5px; cursor: pointer; }
+        
+        .news-feed { display: flex; flex-direction: column; gap: 20px; }
+        .news-row .category { font-size: 0.8rem; color: var(--accent-color); font-weight: 500; margin-bottom: 5px; }
+        .news-grid { background-color: var(--card-bg); border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+        .news-grid .news-image { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; }
+        .news-grid .news-content { padding: 15px; }
+        .news-grid .news-title { font-family: var(--heading-font); font-size: 1.2rem; line-height: 1.4; margin: 8px 0; }
+        .news-list-container { display: grid; gap: 20px; grid-template-columns: 1fr; }
+        .news-list-item { display: flex; align-items: center; gap: 15px; background-color: var(--card-bg); padding: 15px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+        .news-list-item .news-image { width: 100px; height: 100px; object-fit: cover; border-radius: 4px; flex-shrink: 0; }
+        .news-list-item .news-title { font-size: 1rem; line-height: 1.3; font-family: var(--heading-font); }
+        .social-share { display: flex; gap: 15px; margin-top: 10px; align-items: center; }
+        .social-share a { color: #555; font-size: 1.2rem; }
+        .site-footer {
+            background-color: var(--footer-bg); margin-top: 30px; padding: 25px 0;
+            border-top: 1px solid var(--border-color); display: none;
+        }
+        .site-footer.is-visible { display: block; }
+        .footer-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .footer-col h4 { font-family: var(--heading-font); margin-top: 0; margin-bottom: 15px; font-size: 1rem; }
+        .footer-col ul { list-style: none; padding: 0; margin: 0; }
+        .footer-col ul li { margin-bottom: 10px; }
+        .footer-col ul a { font-size: 0.9rem; color: #555; }
+        .copyright { text-align: center; margin-top: 30px; font-size: 0.8rem; color: #888; }
+        .mobile-nav {
+            position: fixed; bottom: 0; left: 0; right: 0; height: 65px; background-color: var(--header-bg);
+            box-shadow: 0 -2px 5px rgba(0,0,0,0.1); z-index: 1001; display: flex; justify-content: space-around; align-items: center;
+        }
+        .mobile-nav a { display: flex; flex-direction: column; align-items: center; justify-content: center; flex-grow: 1; color: #555; font-size: 0.75rem; gap: 4px; height: 100%; }
+        .mobile-nav a i { font-size: 1.4rem; margin-bottom: 2px; }
+        .mobile-nav a.active { color: var(--accent-color); }
+        @media (min-width: 600px) {
+            body { padding-bottom: 0; }
+            .search-container { display: none !important; } /* Selalu sembunyikan di desktop */
+            .news-list-container { grid-template-columns: 1fr 1fr; }
+            .site-footer { display: block; }
+            .footer-grid { grid-template-columns: repeat(4, 1fr); }
+            .mobile-nav { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="site-header">
+        <img src="logo.png" alt="Logo Petungan Jawa" class="logo">
+        <h1 class="site-title">Petungan Jawa</h1>
+    </header>
+
+    <div class="search-container" id="search-container">
+        <form id="search-form">
+            <input type="search" id="search-input" placeholder="Ketik judul berita...">
+            <button type="submit">Cari</button>
+        </form>
+    </div>
+
+    <main class="container">
+        <div class="news-feed" id="news-feed-container"><p>Memuat berita terbaru...</p></div>
+    </main>
+
+    <footer class="site-footer" id="main-footer">
+        <div class="container">
+            <div class="footer-grid" id="footer-grid-container">
+                </div>
+            <p class="copyright">&copy; 2025 Petungan Jawa. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <nav class="mobile-nav">
+        <a href="index.html" class="active"><i class="fas fa-home"></i><span>Home</span></a>
+        <a href="index.html"><i class="fas fa-newspaper"></i><span>Terkini</span></a>
+        <a href="#" id="search-btn"><i class="fas fa-search"></i><span>Cari</span></a>
+        <a href="#" id="more-menu-btn"><i class="fas fa-bars"></i><span>Lainnya</span></a>
+    </nav>
+
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore-compat.js"></script>
+    
+    <script>
+        const firebaseConfig = {
+          apiKey: "AIzaSyBOqC3MOxTPOabaKUtCPrmcIO8VvPDp5YA",
+          authDomain: "suhu-tius.firebaseapp.com",
+          projectId: "suhu-tius",
+          storageBucket: "suhu-tius.appspot.com",
+          messagingSenderId: "227886067791",
+          appId: "1:227886067791:web:f97f4bd58cc0b8c121ba3a"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        let allNewsArticles = [];
+
+        function renderNews(articles) {
+            const newsContainer = document.getElementById('news-feed-container');
+            newsContainer.innerHTML = '';
+            if (articles.length === 0) {
+                newsContainer.innerHTML = '<p>Berita tidak ditemukan.</p>';
+                return;
+            }
+            let i = 0;
+            while (i < articles.length) {
+                const news = articles[i];
+                let newsHtml = '';
+                if (news.position === 'list' && (i + 1 < articles.length) && articles[i+1].position === 'list') {
+                    const news2 = articles[i+1];
+                    newsHtml = createListItemContainer(news, news2, i);
+                    i += 2;
+                } else {
+                    newsHtml = createGridItem(news, i);
+                    i += 1;
+                }
+                newsContainer.innerHTML += newsHtml;
+            }
+        }
+
+        async function fetchAndRenderNews() {
+            const newsContainer = document.getElementById('news-feed-container');
+            newsContainer.innerHTML = '<p>Memuat berita terbaru...</p>';
+            try {
+                const snapshot = await db.collection('berita').orderBy('createdAt', 'desc').get();
+                allNewsArticles = []; // Kosongkan array sebelum diisi ulang
+                snapshot.forEach(doc => {
+                    allNewsArticles.push({ id: doc.id, ...doc.data() });
+                });
+                renderNews(allNewsArticles);
+            } catch (error) {
+                console.error("Error fetching news:", error);
+                newsContainer.innerHTML = '<p style="color:red;">Gagal memuat berita.</p>';
+            }
+        }
+        
+        async function loadFooterMenu() {
+            const footerContainer = document.getElementById('footer-grid-container');
+            try {
+                const snapshot = await db.collection('footer_menu').orderBy('urutan').get();
+                if (snapshot.empty) return;
+                footerContainer.innerHTML = '';
+                snapshot.forEach(doc => {
+                    const data = doc.data();
+                    let linksHtml = '';
+                    if (data.links && Array.isArray(data.links)) {
+                        data.links.forEach(link => {
+                            linksHtml += `<li><a href="${link.url}">${link.text}</a></li>`;
+                        });
+                    }
+                    footerContainer.innerHTML += `<div class="footer-col"><h4>${data.kolom}</h4><ul>${linksHtml}</ul></div>`;
+                });
+            } catch (error) {
+                console.error("Gagal memuat menu footer:", error);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            fetchAndRenderNews(); 
+            loadFooterMenu();
+            
+            // Listener untuk tombol "Lainnya"
+            const moreMenuBtn = document.getElementById('more-menu-btn');
+            const mainFooter = document.getElementById('main-footer');
+            if (moreMenuBtn) {
+                moreMenuBtn.addEventListener('click', (e) => {
+                    e.preventDefault(); 
+                    mainFooter.classList.toggle('is-visible');
+                });
+            }
+
+            // Listener untuk tombol "Cari" di navigasi
+            const searchBtn = document.getElementById('search-btn');
+            const searchContainer = document.getElementById('search-container');
+            if (searchBtn) {
+                searchBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    searchContainer.style.display = searchContainer.style.display === 'block' ? 'none' : 'block';
+                });
+            }
+            
+            // Listener untuk form pencarian
+            const searchForm = document.getElementById('search-form');
+            if (searchForm) {
+                searchForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    const query = document.getElementById('search-input').value.toLowerCase().trim();
+                    const filteredArticles = allNewsArticles.filter(article => 
+                        article.title && article.title.toLowerCase().includes(query)
+                    );
+                    renderNews(filteredArticles);
+                });
+            }
+        });
+
+        // --- FUNGSI-FUNGSI PEMBANTU ---
+        function createGridItem(news, index) {
+            const newsUrl = `detail.html?id=${news.id}`;
+            const imageUrl = news.imageUrl || `https://picsum.photos/800/450?random=${index}`;
+            return `<div class="news-row news-grid"><a href="${newsUrl}"><img src="${imageUrl}" alt="${news.title||''}" class="news-image"><div class="news-content"><p class="category">${news.category||'Berita'}</p><h2 class="news-title">${news.title||'Judul Berita'}</h2></div></a></div>`;
+        }
+        function createListItem(news, index) {
+            if (!news) return '';
+            const newsUrl = `detail.html?id=${news.id}`;
+            const imageUrl = news.imageUrl || `https://picsum.photos/200/200?random=${index}`;
+            return `<div class="news-list-item"><img src="${imageUrl}" alt="${news.title||''}" class="news-image"><div class="news-content"><a href="${newsUrl}"><p class="category">${news.category||'Berita'}</p><h3 class="news-title">${news.title||'Judul Berita'}</h3></a></div></div>`;
+        }
+        function createListItemContainer(news1, news2, index) {
+            return `<div class="news-row news-list-container">${createListItem(news1, index)}${createListItem(news2, index + 1)}</div>`;
+        }
+    </script>
+</body>
+</html>

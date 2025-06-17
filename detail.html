@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detail Berita</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <style>
+        :root {
+            --primary-font: 'Roboto', sans-serif;
+            --heading-font: 'Merriweather', serif;
+            --text-color: #333;
+            --background-color: #fff;
+        }
+        body { font-family: var(--primary-font); margin: 0; background-color: var(--background-color); color: var(--text-color); }
+        .container { max-width: 800px; margin: 0 auto; padding: 20px; }
+        .article-header { border-bottom: 1px solid #eee; margin-bottom: 20px; padding-bottom: 20px; }
+        .article-title { font-family: var(--heading-font); font-size: 2rem; margin: 0 0 10px 0; }
+        .article-meta { font-size: 0.9rem; color: #777; }
+        .article-meta .category { font-weight: 700; color: #8B4513; }
+        .main-image { width: 100%; height: auto; border-radius: 8px; margin-bottom: 20px; }
+        .article-content { width: 100%; }
+        #content-frame { width: 100%; border: none; }
+        .loading { text-align: center; padding: 50px; font-size: 1.2rem; }
+        .social-share { margin-top: 30px; border-top: 1px solid #eee; padding-top: 20px; }
+        .social-share a { font-size: 1.5rem; margin-right: 20px; color: #555; text-decoration: none; }
+    </style>
+</head>
+<body>
+
+    <div class="container" id="article-container" style="display: none;">
+        <header class="article-header">
+            <p class="article-meta"><span class="category" id="detail-category">Kategori</span> - <span id="detail-timestamp"></span></p>
+            <h1 class="article-title" id="detail-title"></h1>
+            <p class="article-meta">Oleh: <strong id="detail-editor"></strong></p>
+        </header>
+        
+        <img src="https://via.placeholder.com/800x400?text=Memuat+Gambar..." alt="Gambar Utama Berita" class="main-image" id="detail-image">
+
+        <div class="article-content">
+            <iframe id="content-frame" onload="resizeIframe(this)"></iframe>
+        </div>
+
+        <div class="social-share">
+            <strong>Bagikan:</strong>
+            <a href="#" id="share-facebook" target="_blank" aria-label="Bagikan ke Facebook"><i class="fab fa-facebook"></i></a>
+            <a href="#" id="share-whatsapp" target="_blank" aria-label="Bagikan ke WhatsApp"><i class="fab fa-whatsapp"></i></a>
+            <a href="#" id="share-twitter" target="_blank" aria-label="Bagikan ke X"><i class="fab fa-twitter"></i></a>
+        </div>
+    </div>
+
+    <div id="loading-container" class="loading">
+        <p>Memuat berita...</p>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore-compat.js"></script>
+
+    <script>
+        // --- KONFIGURASI FIREBASE ---
+        const firebaseConfig = {
+          apiKey: "AIzaSyBOqC3MOxTPOabaKUtCPrmcIO8VvPDp5YA",
+          authDomain: "suhu-tius.firebaseapp.com",
+          projectId: "suhu-tius",
+          storageBucket: "suhu-tius.appspot.com",
+          messagingSenderId: "227886067791",
+          appId: "1:227886067791:web:f97f4bd58cc0b8c121ba3a"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        // --- FUNGSI UTAMA ---
+        async function getNewsDetail() {
+            // 1. Ambil ID berita dari URL
+            const params = new URLSearchParams(window.location.search);
+            const newsId = params.get('id');
+
+            const articleContainer = document.getElementById('article-container');
+            const loadingContainer = document.getElementById('loading-container');
+
+            if (!newsId) {
+                loadingContainer.innerHTML = '<p style="color:red;">Error: ID Berita tidak ditemukan.</p>';
+                return;
+            }
+
+            try {
+                // 2. Ambil data spesifik dari Firestore berdasarkan ID
+                const docRef = db.collection('berita').doc(newsId);
+                const doc = await docRef.get();
+
+                if (doc.exists) {
+                    const data = doc.data();
+
+                    // 3. Masukkan data ke elemen HTML
+                    document.title = data.title; // Ganti judul tab browser
+                    document.getElementById('detail-title').textContent = data.title;
+                    document.getElementById('detail-category').textContent = data.category;
+                    document.getElementById('detail-editor').textContent = data.editor_name;
+                    
+                    if (data.imageUrl) {
+                        document.getElementById('detail-image').src = data.imageUrl;
+                        document.getElementById('detail-image').alt = data.title;
+                    } else {
+                        document.getElementById('detail-image').style.display = 'none';
+                    }
+
+                    // Format tanggal
+                    if (data.createdAt && data.createdAt.toDate) {
+                         const date = data.createdAt.toDate();
+                         document.getElementById('detail-timestamp').textContent = date.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+                    }
+                    
+                    // Render konten HTML di dalam iframe untuk keamanan
+                    const contentFrame = document.getElementById('content-frame');
+                    const iframeDoc = contentFrame.contentDocument || contentFrame.contentWindow.document;
+                    iframeDoc.open();
+                    // Menambahkan style dasar agar konten terlihat baik
+                    iframeDoc.write(`
+                        <style>
+                            body { font-family: 'Roboto', sans-serif; line-height: 1.8; font-size: 1.1rem; color: #333; margin: 0; padding: 0;}
+                            img { max-width: 100%; height: auto; border-radius: 8px; }
+                            h1, h2, h3 { font-family: 'Merriweather', serif; }
+                        </style>
+                        ${data.content}
+                    `);
+                    iframeDoc.close();
+                    
+                    // Setup Tombol Share
+                    const pageUrl = window.location.href;
+                    document.getElementById('share-facebook').href = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(pageUrl)}`;
+                    document.getElementById('share-whatsapp').href = `https://api.whatsapp.com/send?text=${encodeURIComponent(data.title + " " + pageUrl)}`;
+                    document.getElementById('share-twitter').href = `https://twitter.com/intent/tweet?url=${encodeURIComponent(pageUrl)}&text=${encodeURIComponent(data.title)}`;
+
+
+                    // Tampilkan konten, sembunyikan loading
+                    articleContainer.style.display = 'block';
+                    loadingContainer.style.display = 'none';
+                } else {
+                    loadingContainer.innerHTML = '<p style="color:red;">Error: Berita tidak ditemukan.</p>';
+                }
+            } catch (error) {
+                console.error("Error mengambil dokumen:", error);
+                loadingContainer.innerHTML = '<p style="color:red;">Gagal memuat berita. Terjadi kesalahan.</p>';
+            }
+        }
+
+        // Fungsi untuk menyesuaikan tinggi iframe dengan kontennya
+        function resizeIframe(obj) {
+            obj.style.height = obj.contentWindow.document.documentElement.scrollHeight + 'px';
+        }
+
+        // Panggil fungsi utama saat halaman dimuat
+        document.addEventListener('DOMContentLoaded', getNewsDetail);
+    </script>
+</body>
+</html>

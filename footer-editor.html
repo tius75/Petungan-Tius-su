@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editor Menu Footer Lengkap - Petungan Jawa</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body{font-family:'Roboto',sans-serif;margin:0;background-color:#f4f7f6;color:#333}.container{max-width:1000px;margin:20px auto;padding:20px}h1,h2{text-align:center;color:#2c3e50}.card{background:#fff;padding:20px;border-radius:8px;box-shadow:0 2px 5px rgba(0,0,0,0.1);margin-bottom:20px}.back-button{display:inline-block;margin-bottom:20px;padding:10px 15px;background-color:#7f8c8d;color:white;text-decoration:none;border-radius:5px}.footer-columns{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px}.column-header{display:flex;justify-content:space-between;align-items:center;border-bottom:2px solid #ecf0f1;padding-bottom:10px;margin-bottom:10px}.column-header h3{margin:0}.column-actions button{background:none;border:none;cursor:pointer;padding:5px;font-size:0.9em}.edit-col-btn{color:#f1c40f}.delete-col-btn{color:#e74c3c}.column-card ul{list-style:none;padding:0}.column-card li{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid #f2f2f2;font-size:0.9em}.delete-link-btn{background:#e74c3c;color:white;border:none;border-radius:4px;cursor:pointer;padding:4px 8px;font-size:0.8em}.add-link-form{margin-top:20px;padding-top:20px;border-top:1px dashed #ccc}.add-link-form input,.add-link-form select{width:100%;padding:8px;margin-bottom:10px;box-sizing:border-box}.add-link-form select option:disabled{color:#aaa;background:#f4f4f4}.add-link-form button{width:100%;padding:10px;background:#2ecc71;color:white;border:none;cursor:pointer}.form-divider{text-align:center;margin:10px 0;font-weight:bold;color:#777}
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Editor Menu Footer</h1>
+        <a href="dashboard.html" class="back-button">&laquo; Kembali ke Dashboard</a>
+
+        <div class="card">
+            <h2>Tambah Kolom Footer Baru</h2>
+            <form class="add-link-form" id="add-column-form">
+                <input type="text" placeholder="Judul Kolom Baru (Contoh: Bantuan)" name="kolom" required>
+                <input type="number" placeholder="Nomor Urutan (Contoh: 3)" name="urutan" required>
+                <button type="submit">Buat Kolom Baru</button>
+            </form>
+        </div>
+
+        <div class="footer-columns" id="footer-columns-container"></div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore-compat.js"></script>
+    <script>
+        const firebaseConfig={apiKey:"AIzaSyBOqC3MOxTPOabaKUtCPrmcIO8VvPDp5YA",authDomain:"suhu-tius.firebaseapp.com",projectId:"suhu-tius",storageBucket:"suhu-tius.appspot.com",messagingSenderId:"227886067791",appId:"1:227886067791:web:f97f4bd58cc0b8c121ba3a"};
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        const FieldValue = firebase.firestore.FieldValue;
+        const columnsContainer = document.getElementById('footer-columns-container');
+
+        async function loadFooterEditor() {
+            columnsContainer.innerHTML = '<p style="text-align: center;">Memuat menu...</p>';
+            const newsSnapshot = await db.collection('berita').orderBy('createdAt', 'desc').get();
+            let newsOptionsHtml = '<option value="">-- Pilih Berita --</option>';
+            newsSnapshot.forEach(doc => { newsOptionsHtml += `<option value="${doc.id}">${doc.data().title}</option>`; });
+
+            const menuSnapshot = await db.collection('footer_menu').orderBy('urutan').get();
+            columnsContainer.innerHTML = '';
+            menuSnapshot.forEach(doc => {
+                const column = doc.data();
+                let linksHtml = '<ul>';
+                const usedUrlsInThisColumn = new Set();
+                if (column.links && Array.isArray(column.links)) {
+                    column.links.forEach(link => {
+                        usedUrlsInThisColumn.add(`detail.html?id=${link.url.split('=')[1]}`);
+                        linksHtml += `<li><span>${link.text} <br><small style="color:#777;">(${link.url})</small></span><button class="delete-link-btn" data-doc-id="${doc.id}" data-text="${link.text}" data-url="${link.url}">Hapus</button></li>`;
+                    });
+                }
+                linksHtml += '</ul>';
+                
+                let dynamicNewsOptions = '<option value="">-- Pilih Berita --</option>';
+                newsSnapshot.forEach(newsDoc => {
+                    const articleUrl = `detail.html?id=${newsDoc.id}`;
+                    const isUsed = usedUrlsInThisColumn.has(articleUrl);
+                    dynamicNewsOptions += `<option value="${newsDoc.id}" ${isUsed ? 'disabled' : ''}>${newsDoc.data().title}${isUsed ? ' (Sudah dipakai di kolom ini)' : ''}</option>`;
+                });
+
+                const columnCard = document.createElement('div');
+                columnCard.className = 'card column-card';
+                columnCard.innerHTML = `
+                    <div class="column-header">
+                        <h3>${column.kolom} (Urutan: ${column.urutan})</h3>
+                        <div class="column-actions">
+                            <button class="edit-col-btn" data-doc-id="${doc.id}" data-old-title="${column.kolom}" data-old-order="${column.urutan}">✏️ Edit</button>
+                            <button class="delete-col-btn" data-doc-id="${doc.id}" data-title="${column.kolom}">❌ Hapus</button>
+                        </div>
+                    </div>
+                    ${linksHtml}
+                    <form class="add-link-form" data-doc-id="${doc.id}">
+                        <h4>Tambah Link Baru</h4>
+                        <input type="text" placeholder="Teks Link (Wajib diisi)" name="text" required>
+                        <select name="news-select">${dynamicNewsOptions}</select>
+                        <div class="form-divider">ATAU</div>
+                        <input type="text" placeholder="URL Manual" name="url">
+                        <button type="submit">Tambah Link</button>
+                    </form>
+                `;
+                columnsContainer.appendChild(columnCard);
+            });
+        }
+
+        document.getElementById('add-column-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const newColumn = {
+                kolom: e.target.kolom.value,
+                urutan: Number(e.target.urutan.value),
+                links: []
+            };
+            try {
+                await db.collection('footer_menu').add(newColumn);
+                alert('Kolom baru berhasil dibuat!');
+                loadFooterEditor();
+                e.target.reset();
+            } catch (error) { alert('Gagal membuat kolom: ' + error); }
+        });
+
+        columnsContainer.addEventListener('click', async (e) => {
+            const target = e.target;
+            const docId = target.dataset.docId;
+            if (!docId) return;
+
+            if (target.classList.contains('delete-col-btn')) {
+                if (confirm(`Yakin ingin menghapus seluruh kolom "${target.dataset.title}"?`)) {
+                    await db.collection('footer_menu').doc(docId).delete();
+                    alert('Kolom berhasil dihapus.');
+                    loadFooterEditor();
+                }
+            } else if (target.classList.contains('edit-col-btn')) {
+                const newTitle = prompt("Masukkan judul kolom baru:", target.dataset.oldTitle);
+                const newOrder = prompt("Masukkan nomor urutan baru:", target.dataset.oldOrder);
+                if (newTitle && newOrder) {
+                    await db.collection('footer_menu').doc(docId).update({ kolom: newTitle, urutan: Number(newOrder) });
+                    alert('Kolom berhasil diupdate.');
+                    loadFooterEditor();
+                }
+            } else if (target.classList.contains('delete-link-btn')) {
+                const linkToDelete = { text: target.dataset.text, url: target.dataset.url };
+                if (confirm(`Yakin ingin menghapus link "${linkToDelete.text}"?`)) {
+                    await db.collection('footer_menu').doc(docId).update({ links: FieldValue.arrayRemove(linkToDelete) });
+                    alert('Link berhasil dihapus.');
+                    loadFooterEditor();
+                }
+            }
+        });
+        
+        columnsContainer.addEventListener('submit', async (e) => {
+            if (e.target.classList.contains('add-link-form')) {
+                e.preventDefault();
+                const docId = e.target.dataset.docId;
+                const text = e.target.text.value;
+                const selectedNewsId = e.target['news-select'].value;
+                const manualUrl = e.target.url.value;
+                let finalUrl = '';
+                if (selectedNewsId) { finalUrl = `detail.html?id=${selectedNewsId}`; }
+                else if (manualUrl) { finalUrl = manualUrl; }
+                else { alert('Pilih berita atau isi URL manual.'); return; }
+                const newLink = { text: text, url: finalUrl };
+                await db.collection('footer_menu').doc(docId).update({ links: FieldValue.arrayUnion(newLink) });
+                alert('Link berhasil ditambahkan.');
+                loadFooterEditor();
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', loadFooterEditor);
+    </script>
+</body>
+</html>
