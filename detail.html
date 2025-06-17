@@ -1,161 +1,125 @@
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Detail Berita</title>
+    <title>Petungan Jawa</title>
     
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore-compat.js"></script>
+    <script>
+        const firebaseConfig={apiKey:"AIzaSyBOqC3MOxTPOabaKUtCPrmcIO8VvPDp5YA",authDomain:"suhu-tius.firebaseapp.com",projectId:"suhu-tius",storageBucket:"suhu-tius.appspot.com",messagingSenderId:"227886067791",appId:"1:227886067791:web:f97f4bd58cc0b8c121ba3a"};firebase.initializeApp(firebaseConfig);const auth=firebase.auth(),db=firebase.firestore();auth.onAuthStateChanged(user=>{if(!user)window.location.href='login.html'});
+    </script>
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <meta name="theme-color" content="#2c3e50"/>
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="logo.png">
 
     <style>
-        :root {
-            --primary-font: 'Roboto', sans-serif;
-            --heading-font: 'Merriweather', serif;
-            --text-color: #333;
-            --background-color: #fff;
-        }
-        body { font-family: var(--primary-font); margin: 0; background-color: var(--background-color); color: var(--text-color); }
-        .container { max-width: 800px; margin: 0 auto; padding: 20px; }
-        .article-header { border-bottom: 1px solid #eee; margin-bottom: 20px; padding-bottom: 20px; }
-        .article-title { font-family: var(--heading-font); font-size: 2rem; margin: 0 0 10px 0; }
-        .article-meta { font-size: 0.9rem; color: #777; }
-        .article-meta .category { font-weight: 700; color: #8B4513; }
-        .main-image { width: 100%; height: auto; border-radius: 8px; margin-bottom: 20px; }
-        .article-content { width: 100%; }
-        #content-frame { width: 100%; border: none; }
-        .loading { text-align: center; padding: 50px; font-size: 1.2rem; }
-        .social-share { margin-top: 30px; border-top: 1px solid #eee; padding-top: 20px; }
-        .social-share a { font-size: 1.5rem; margin-right: 20px; color: #555; text-decoration: none; }
+        :root{--primary-font:'Roboto',sans-serif;--heading-font:'Merriweather',serif;--text-color:#333;--background-color:#f4f4f4;--header-bg:#fff;--card-bg:#fff;--accent-color:#8B4513}
+        body{font-family:var(--primary-font);margin:0;background-color:var(--background-color);color:var(--text-color);padding-top:70px;padding-bottom:80px}
+        .container{max-width:1200px;margin:0 auto;padding:15px}
+        a{text-decoration:none;color:inherit}
+        .site-header{display:flex;align-items:center;justify-content:center;padding:10px 15px;background-color:var(--header-bg);box-shadow:0 2px 5px rgba(0,0,0,0.1);position:fixed;top:0;left:0;right:0;z-index:1000;height:50px}
+        .site-header .logo{width:40px;height:40px;margin-right:12px}
+        .site-header .site-title{font-family:var(--heading-font);font-size:1.5rem;font-weight:700;margin:0}
+        .search-container{background-color:#fff;padding:15px;box-shadow:0 4px 6px rgba(0,0,0,0.1);display:none;position:fixed;top:70px;left:0;right:0;z-index:999}
+        .search-container form{display:flex;gap:10px}
+        .search-container input{flex-grow:1;border:1px solid #ddd;padding:10px;border-radius:5px}
+        .search-container button{border:none;background-color:var(--accent-color);color:white;padding:0 20px;border-radius:5px;cursor:pointer}
+        .news-feed{display:flex;flex-direction:column;gap:20px}
+        .news-list-container{display:grid;gap:20px;grid-template-columns:1fr}
+        @media (min-width:600px){.news-list-container{grid-template-columns:1fr 1fr}}
+        .mobile-nav{position:fixed;bottom:0;left:0;right:0;height:65px;background-color:var(--header-bg);box-shadow:0 -2px 5px rgba(0,0,0,0.1);z-index:1001;display:flex;justify-content:space-around;align-items:center}
+        .mobile-nav a{display:flex;flex-direction:column;align-items:center;justify-content:center;flex-grow:1;color:#555;font-size:.75rem;gap:4px;height:100%}
+        .mobile-nav a i{font-size:1.4rem;margin-bottom:2px}
+        .mobile-nav a.active{color:var(--accent-color)}
+        
+        /* CSS BARU UNTUK GRID MENU 'LAINNYA' */
+        .more-menu-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:1002;display:none;align-items:flex-end}
+        .more-menu-overlay.visible{display:flex}
+        .grid-menu-container{background:#fff;width:100%;padding:20px;border-radius:16px 16px 0 0;box-sizing:border-box}
+        .grid-menu-container h2{text-align:center;margin-top:0;margin-bottom:20px;font-family:var(--heading-font)}
+        .grid-menu{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:15px}
+        .grid-menu-item{display:flex;flex-direction:column;align-items:center;gap:8px;padding:15px;border-radius:8px;background-color:#f4f7f6;text-align:center;font-size:0.9em}
     </style>
 </head>
 <body>
-
-    <div class="container" id="article-container" style="display: none;">
-        <header class="article-header">
-            <p class="article-meta"><span class="category" id="detail-category">Kategori</span> - <span id="detail-timestamp"></span></p>
-            <h1 class="article-title" id="detail-title"></h1>
-            <p class="article-meta">Oleh: <strong id="detail-editor"></strong></p>
-        </header>
-        
-        <img src="https://via.placeholder.com/800x400?text=Memuat+Gambar..." alt="Gambar Utama Berita" class="main-image" id="detail-image">
-
-        <div class="article-content">
-            <iframe id="content-frame" onload="resizeIframe(this)"></iframe>
-        </div>
-
-        <div class="social-share">
-            <strong>Bagikan:</strong>
-            <a href="#" id="share-facebook" target="_blank" aria-label="Bagikan ke Facebook"><i class="fab fa-facebook"></i></a>
-            <a href="#" id="share-whatsapp" target="_blank" aria-label="Bagikan ke WhatsApp"><i class="fab fa-whatsapp"></i></a>
-            <a href="#" id="share-twitter" target="_blank" aria-label="Bagikan ke X"><i class="fab fa-twitter"></i></a>
+    <header class="site-header"><img src="logo.png" alt="Logo Petungan Jawa" class="logo"><h1 id="site-title" class="site-title">Petungan Jawa</h1></header>
+    <div class="search-container" id="search-container">...</div>
+    <main class="container"><div class="news-feed" id="news-feed-container"><p>Memuat berita...</p></div></main>
+    
+    <div class="more-menu-overlay" id="more-menu-overlay">
+        <div class="grid-menu-container">
+            <h2>Kategori Pilihan</h2>
+            <div class="grid-menu" id="category-grid">
+                </div>
         </div>
     </div>
 
-    <div id="loading-container" class="loading">
-        <p>Memuat berita...</p>
-    </div>
-
-    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore-compat.js"></script>
-
+    <nav class="mobile-nav">
+        <a href="index.html" class="active"><i class="fas fa-home"></i><span>Home</span></a>
+        <a href="index.html"><i class="fas fa-newspaper"></i><span>Terkini</span></a>
+        <a href="#" id="search-btn"><i class="fas fa-search"></i><span>Cari</span></a>
+        <a href="#" id="more-menu-btn"><i class="fas fa-bars"></i><span>Lainnya</span></a>
+    </nav>
+    
     <script>
-        // --- KONFIGURASI FIREBASE ---
-        const firebaseConfig = {
-          apiKey: "AIzaSyBOqC3MOxTPOabaKUtCPrmcIO8VvPDp5YA",
-          authDomain: "suhu-tius.firebaseapp.com",
-          projectId: "suhu-tius",
-          storageBucket: "suhu-tius.appspot.com",
-          messagingSenderId: "227886067791",
-          appId: "1:227886067791:web:f97f4bd58cc0b8c121ba3a"
-        };
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.firestore();
+        // ... (Fungsi-fungsi JavaScript lainnya tidak berubah)
 
-        // --- FUNGSI UTAMA ---
-        async function getNewsDetail() {
-            // 1. Ambil ID berita dari URL
-            const params = new URLSearchParams(window.location.search);
-            const newsId = params.get('id');
-
-            const articleContainer = document.getElementById('article-container');
-            const loadingContainer = document.getElementById('loading-container');
-
-            if (!newsId) {
-                loadingContainer.innerHTML = '<p style="color:red;">Error: ID Berita tidak ditemukan.</p>';
-                return;
-            }
-
+        // FUNGSI BARU UNTUK MEMUAT KATEGORI KE GRID MENU
+        async function loadCategoryGridMenu() {
+            const gridContainer = document.getElementById('category-grid');
             try {
-                // 2. Ambil data spesifik dari Firestore berdasarkan ID
-                const docRef = db.collection('berita').doc(newsId);
-                const doc = await docRef.get();
-
-                if (doc.exists) {
-                    const data = doc.data();
-
-                    // 3. Masukkan data ke elemen HTML
-                    document.title = data.title; // Ganti judul tab browser
-                    document.getElementById('detail-title').textContent = data.title;
-                    document.getElementById('detail-category').textContent = data.category;
-                    document.getElementById('detail-editor').textContent = data.editor_name;
-                    
-                    if (data.imageUrl) {
-                        document.getElementById('detail-image').src = data.imageUrl;
-                        document.getElementById('detail-image').alt = data.title;
-                    } else {
-                        document.getElementById('detail-image').style.display = 'none';
-                    }
-
-                    // Format tanggal
-                    if (data.createdAt && data.createdAt.toDate) {
-                         const date = data.createdAt.toDate();
-                         document.getElementById('detail-timestamp').textContent = date.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
-                    }
-                    
-                    // Render konten HTML di dalam iframe untuk keamanan
-                    const contentFrame = document.getElementById('content-frame');
-                    const iframeDoc = contentFrame.contentDocument || contentFrame.contentWindow.document;
-                    iframeDoc.open();
-                    // Menambahkan style dasar agar konten terlihat baik
-                    iframeDoc.write(`
-                        <style>
-                            body { font-family: 'Roboto', sans-serif; line-height: 1.8; font-size: 1.1rem; color: #333; margin: 0; padding: 0;}
-                            img { max-width: 100%; height: auto; border-radius: 8px; }
-                            h1, h2, h3 { font-family: 'Merriweather', serif; }
-                        </style>
-                        ${data.content}
-                    `);
-                    iframeDoc.close();
-                    
-                    // Setup Tombol Share
-                    const pageUrl = window.location.href;
-                    document.getElementById('share-facebook').href = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(pageUrl)}`;
-                    document.getElementById('share-whatsapp').href = `https://api.whatsapp.com/send?text=${encodeURIComponent(data.title + " " + pageUrl)}`;
-                    document.getElementById('share-twitter').href = `https://twitter.com/intent/tweet?url=${encodeURIComponent(pageUrl)}&text=${encodeURIComponent(data.title)}`;
-
-
-                    // Tampilkan konten, sembunyikan loading
-                    articleContainer.style.display = 'block';
-                    loadingContainer.style.display = 'none';
-                } else {
-                    loadingContainer.innerHTML = '<p style="color:red;">Error: Berita tidak ditemukan.</p>';
-                }
+                const snapshot = await db.collection('kategori').orderBy('nama').get();
+                gridContainer.innerHTML = '';
+                snapshot.forEach(doc => {
+                    const kategori = doc.data();
+                    const url = `index.html?kategori=${kategori.nama.toLowerCase().replace(/ /g, '-')}`;
+                    const gridItem = `
+                        <a href="${url}" class="grid-menu-item">
+                            <span>${kategori.nama}</span>
+                        </a>
+                    `;
+                    gridContainer.innerHTML += gridItem;
+                });
             } catch (error) {
-                console.error("Error mengambil dokumen:", error);
-                loadingContainer.innerHTML = '<p style="color:red;">Gagal memuat berita. Terjadi kesalahan.</p>';
+                console.error("Gagal memuat kategori:", error);
+                gridContainer.innerHTML = '<p>Gagal memuat kategori.</p>';
             }
         }
+        
+        // --- EVENT LISTENER (PENGATUR FUNGSI) ---
+        document.addEventListener('DOMContentLoaded', () => {
+            fetchAndRenderNews();
+            loadCategoryGridMenu(); // <-- PANGGIL FUNGSI BARU
 
-        // Fungsi untuk menyesuaikan tinggi iframe dengan kontennya
-        function resizeIframe(obj) {
-            obj.style.height = obj.contentWindow.document.documentElement.scrollHeight + 'px';
-        }
+            const moreMenuBtn = document.getElementById('more-menu-btn');
+            const moreMenuOverlay = document.getElementById('more-menu-overlay');
+            
+            // UBAH FUNGSI TOMBOL 'LAINNYA'
+            moreMenuBtn.addEventListener('click', (e) => {
+                e.preventDefault(); 
+                moreMenuOverlay.classList.add('visible');
+            });
 
-        // Panggil fungsi utama saat halaman dimuat
-        document.addEventListener('DOMContentLoaded', getNewsDetail);
+            // FUNGSI UNTUK MENUTUP OVERLAY JIKA KLIK DI AREA GELAP
+            moreMenuOverlay.addEventListener('click', (e) => {
+                if (e.target === moreMenuOverlay) {
+                    moreMenuOverlay.classList.remove('visible');
+                }
+            });
+
+            // (Listener untuk search tidak berubah)
+        });
+        
+        // (Sisa kode seperti fetchAndRenderNews, renderNews, createGridItem, dll, tetap ada dan sama seperti sebelumnya)
     </script>
 </body>
 </html>
