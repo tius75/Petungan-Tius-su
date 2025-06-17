@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -26,7 +27,8 @@
             </form>
         </div>
 
-        <div class="footer-columns" id="footer-columns-container"></div>
+        <div class="footer-columns" id="footer-columns-container">
+            </div>
     </div>
 
     <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
@@ -49,37 +51,28 @@
             menuSnapshot.forEach(doc => {
                 const column = doc.data();
                 let linksHtml = '<ul>';
-                const usedUrlsInThisColumn = new Set();
                 if (column.links && Array.isArray(column.links)) {
                     column.links.forEach(link => {
-                        usedUrlsInThisColumn.add(`detail.html?id=${link.url.split('=')[1]}`);
                         linksHtml += `<li><span>${link.text} <br><small style="color:#777;">(${link.url})</small></span><button class="delete-link-btn" data-doc-id="${doc.id}" data-text="${link.text}" data-url="${link.url}">Hapus</button></li>`;
                     });
                 }
                 linksHtml += '</ul>';
                 
-                let dynamicNewsOptions = '<option value="">-- Pilih Berita --</option>';
-                newsSnapshot.forEach(newsDoc => {
-                    const articleUrl = `detail.html?id=${newsDoc.id}`;
-                    const isUsed = usedUrlsInThisColumn.has(articleUrl);
-                    dynamicNewsOptions += `<option value="${newsDoc.id}" ${isUsed ? 'disabled' : ''}>${newsDoc.data().title}${isUsed ? ' (Sudah dipakai di kolom ini)' : ''}</option>`;
-                });
-
                 const columnCard = document.createElement('div');
                 columnCard.className = 'card column-card';
                 columnCard.innerHTML = `
                     <div class="column-header">
-                        <h3>${column.kolom} (Urutan: ${column.urutan})</h3>
+                        <h3>${column.kolom}</h3>
                         <div class="column-actions">
-                            <button class="edit-col-btn" data-doc-id="${doc.id}" data-old-title="${column.kolom}" data-old-order="${column.urutan}">✏️ Edit</button>
-                            <button class="delete-col-btn" data-doc-id="${doc.id}" data-title="${column.kolom}">❌ Hapus</button>
+                            <button class="edit-col-btn" title="Edit Judul & Urutan" data-doc-id="${doc.id}" data-old-title="${column.kolom}" data-old-order="${column.urutan}">✏️</button>
+                            <button class="delete-col-btn" title="Hapus Kolom Ini" data-doc-id="${doc.id}" data-title="${column.kolom}">❌</button>
                         </div>
                     </div>
                     ${linksHtml}
                     <form class="add-link-form" data-doc-id="${doc.id}">
                         <h4>Tambah Link Baru</h4>
-                        <input type="text" placeholder="Teks Link (Wajib diisi)" name="text" required>
-                        <select name="news-select">${dynamicNewsOptions}</select>
+                        <input type="text" placeholder="Teks Link" name="text" required>
+                        <select name="news-select">${newsOptionsHtml}</select>
                         <div class="form-divider">ATAU</div>
                         <input type="text" placeholder="URL Manual" name="url">
                         <button type="submit">Tambah Link</button>
@@ -89,12 +82,13 @@
             });
         }
 
+        // Listener untuk form 'Tambah Kolom Baru'
         document.getElementById('add-column-form').addEventListener('submit', async (e) => {
             e.preventDefault();
             const newColumn = {
                 kolom: e.target.kolom.value,
                 urutan: Number(e.target.urutan.value),
-                links: []
+                links: [] // Dimulai dengan array link yang kosong
             };
             try {
                 await db.collection('footer_menu').add(newColumn);
@@ -104,18 +98,24 @@
             } catch (error) { alert('Gagal membuat kolom: ' + error); }
         });
 
+        // Listener untuk semua aksi di dalam kolom (Edit/Hapus Kolom, Hapus Link)
         columnsContainer.addEventListener('click', async (e) => {
-            const target = e.target;
+            const target = e.target.closest('button'); // Dapatkan elemen tombol yang diklik
+            if (!target) return;
+
             const docId = target.dataset.docId;
             if (!docId) return;
 
+            // Aksi Hapus Kolom
             if (target.classList.contains('delete-col-btn')) {
-                if (confirm(`Yakin ingin menghapus seluruh kolom "${target.dataset.title}"?`)) {
+                if (confirm(`Yakin ingin menghapus seluruh kolom "${target.dataset.title}" beserta semua link di dalamnya?`)) {
                     await db.collection('footer_menu').doc(docId).delete();
                     alert('Kolom berhasil dihapus.');
                     loadFooterEditor();
                 }
-            } else if (target.classList.contains('edit-col-btn')) {
+            } 
+            // Aksi Edit Judul Kolom
+            else if (target.classList.contains('edit-col-btn')) {
                 const newTitle = prompt("Masukkan judul kolom baru:", target.dataset.oldTitle);
                 const newOrder = prompt("Masukkan nomor urutan baru:", target.dataset.oldOrder);
                 if (newTitle && newOrder) {
@@ -123,7 +123,9 @@
                     alert('Kolom berhasil diupdate.');
                     loadFooterEditor();
                 }
-            } else if (target.classList.contains('delete-link-btn')) {
+            }
+            // Aksi Hapus Link
+            else if (target.classList.contains('delete-link-btn')) {
                 const linkToDelete = { text: target.dataset.text, url: target.dataset.url };
                 if (confirm(`Yakin ingin menghapus link "${linkToDelete.text}"?`)) {
                     await db.collection('footer_menu').doc(docId).update({ links: FieldValue.arrayRemove(linkToDelete) });
@@ -133,6 +135,7 @@
             }
         });
         
+        // Listener untuk form 'Tambah Link Baru'
         columnsContainer.addEventListener('submit', async (e) => {
             if (e.target.classList.contains('add-link-form')) {
                 e.preventDefault();
