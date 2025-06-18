@@ -6,9 +6,12 @@
 <title>CMS Petungan Jawa - Versi Lengkap</title>
 <link href="https://fonts.googleapis.com" rel="preconnect"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
-<link href="https://fonts.googleapis.com/css2?family=Lato&amp;family=Merriweather&amp;family=Montserrat&amp;family=Open+Sans&amp;family=Oswald&amp;family=Roboto&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet"/>
 <style>
-    :root{--primary-color:#2c3e50;--secondary-color:#3498db;--accent-color:#e74c3c;--light-color:#ecf0f1;--dark-color:#2c3e50}body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:linear-gradient(135deg,#f5f7fa 0%,#c3cfe2 100%);color:var(--dark-color);margin:0;padding:0;min-height:100vh}.container{max-width:1200px;margin:0 auto;padding:20px}header{background:linear-gradient(to right,var(--primary-color),var(--secondary-color));color:white;padding:20px 0;text-align:center;border-radius:0 0 10px 10px;box-shadow:0 4px 12px rgba(0,0,0,0.1);margin-bottom:30px;display:flex;align-items:center;justify-content:center}.logo{height:50px;margin-right:15px}.main-content{display:grid;grid-template-columns:1fr;gap:30px}@media(min-width:992px){.main-content{grid-template-columns:1fr 1fr}}.form-section,.preview-section{background:white;border-radius:10px;padding:25px;box-shadow:0 5px 15px rgba(0,0,0,0.08)}.form-group{margin-bottom:25px}label{display:block;margin-bottom:8px;font-weight:600;color:var(--primary-color)}input,select,textarea{width:100%;padding:12px 15px;border:1px solid #ddd;border-radius:6px;font-size:16px;box-sizing:border-box;transition:all .3s}input:focus,select:focus,textarea:focus{border-color:var(--secondary-color);box-shadow:0 0 0 3px rgba(52,152,219,.2);outline:none}.button-group{display:flex;gap:15px;margin-top:20px}button{padding:12px 25px;border:none;border-radius:6px;font-size:16px;font-weight:600;cursor:pointer;transition:all .3s;flex:1}.btn-primary{background-color:var(--secondary-color);color:white}.btn-secondary{background-color:var(--light-color);color:var(--dark-color)}.btn-upload{background-color:#2ecc71;color:white}.preview-card{border:1px solid #eee;border-radius:8px;padding:20px;background:white;box-shadow:0 2px 10px rgba(0,0,0,0.05)}.preview-title{color:var(--primary-color);margin-top:0;border-bottom:2px solid var(--light-color);padding-bottom:10px}.preview-image{width:100%;max-height:300px;object-fit:cover;border-radius:6px;margin-bottom:15px}.hidden{display:none}
+    :root{--primary-color:#2c3e50;--secondary-color:#3498db;--accent-color:#e74c3c;--light-color:#ecf0f1;--dark-color:#2c3e50}body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:linear-gradient(135deg,#f5f7fa 0%,#c3cfe2 100%);color:var(--dark-color);margin:0;padding:0;min-height:100vh}.container{max-width:1200px;margin:0 auto;padding:20px}header{background:linear-gradient(to right,var(--primary-color),var(--secondary-color));color:white;padding:20px 0;text-align:center;border-radius:0 0 10px 10px;box-shadow:0 4px 12px rgba(0,0,0,0.1);margin-bottom:30px;display:flex;align-items:center;justify-content:center}.logo{height:50px;margin-right:15px}.main-content{display:grid;grid-template-columns:1fr;gap:30px}@media(min-width:992px){.main-content{grid-template-columns:1fr 1fr}}.form-section,.preview-section{background:white;border-radius:10px;padding:25px;box-shadow:0 5px 15px rgba(0,0,0,0.08)}.form-group{margin-bottom:25px}label{display:block;margin-bottom:8px;font-weight:600;color:var(--primary-color)}input,select,textarea{width:100%;padding:12px 15px;border:1px solid #ddd;border-radius:6px;font-size:16px;box-sizing:border-box;transition:all .3s}.button-group{display:flex;gap:15px;margin-top:20px}button{padding:12px 25px;border:none;border-radius:6px;font-size:16px;font-weight:600;cursor:pointer;transition:all .3s;flex:1}.btn-primary{background-color:var(--secondary-color);color:white}.btn-secondary{background-color:var(--light-color);color:var(--dark-color)}.btn-upload{background-color:#2ecc71;color:white}.preview-card{border:1px solid #eee;border-radius:8px;padding:20px;background:white;box-shadow:0 2px 10px rgba(0,0,0,0.05)}.preview-title{color:var(--primary-color);margin-top:0;border-bottom:2px solid var(--light-color);padding-bottom:10px}.preview-image{width:100%;max-height:300px;object-fit:cover;border-radius:6px;margin-bottom:15px}.hidden{display:none}
+    /* STYLE BARU UNTUK KATEGORI */
+    .radio-group{border:1px solid #ddd;padding:10px;border-radius:6px;max-height:150px;overflow-y:auto}.radio-item{display:flex;align-items:center;margin-bottom:8px}
+    .radio-item input[type="radio"]{width:auto;margin-right:10px}.radio-item label{margin-bottom:0;font-weight:normal}
 </style>
 <script src="https://upload-widget.cloudinary.com/global/all.js" type="text/javascript"></script>
 <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
@@ -28,19 +31,23 @@
     <h2 id="form-title">Formulir Berita</h2>
     <form id="news-form">
         <div class="form-group"><label for="title">Judul Berita</label><input id="title" required type="text"/></div>
-        <div class="form-group"><label for="position">Posisi Berita</label><select id="position" required><option value="grid">Grid (Normal)</option><option value="list">List (2 Kolom)</option></select></div>
-        <div class="form-group"><label for="category">Kategori Berita</label><select id="category" required><option value="hitungan-jawa">Hitungan Jawa</option><option value="ajaran-aksara-jawa">Ajaran Aksara Jawa</option><option value="ajaran-jawa">Ajaran Jawa</option><option value="hiburan">Hiburan</option></select></div>
+        
+        <!-- KOLOM BARU UNTUK JILID/BAGIAN -->
+        <div class="form-group"><label for="part">Bagian / Jilid (Opsional)</label><input id="part" type="text" placeholder="Contoh: Bagian 1, atau biarkan kosong"></div>
+
+        <div class="form-group"><label for="position">Posisi Tampil</label><select id="position" required><option value="grid">Grid (Normal)</option><option value="list">List (2 Kolom)</option></select></div>
+        
+        <!-- LAYOUT BARU UNTUK KATEGORI -->
+        <div class="form-group">
+            <label>Kategori Berita</label>
+            <div id="category-container" class="radio-group">
+                <p>Memuat kategori...</p>
+            </div>
+        </div>
+        
         <div class="form-group"><label for="editor_name">Nama Editor</label><input id="editor_name" required type="text"/></div>
         <div class="form-group"><label>Gambar Utama</label><button class="btn-upload" id="upload-to-cloudinary" type="button">Upload Gambar Utama</button><input id="image-url" type="hidden"/></div>
-        
-        <div class="form-group">
-            <label for="html-code">Isi Berita (Bisa HTML)</label>
-            <div id="custom-toolbar" style="margin-bottom: 10px; display: flex; gap: 10px; flex-wrap: wrap;">
-                <button class="btn-secondary" type="button" onclick="insertAtCursor('html-code', '<h1>Judul</h1>')">H1</button>
-                <button class="btn-secondary" type="button" onclick="insertAtCursor('html-code', '<p>Paragraf</p>')">P</button>
-            </div>
-            <textarea id="html-code" style="min-height: 250px; font-family: monospace;"></textarea>
-        </div>
+        <div class="form-group"><label for="html-code">Isi Berita (Bisa HTML)</label><textarea id="html-code" style="min-height: 250px; font-family: monospace;"></textarea></div>
         <div class="form-group"><label for="upload-doc">Atau Upload dari Dokumen (.docx, .txt)</label><input accept=".docx,.txt" id="upload-doc" type="file"/></div>
         <div class="button-group">
             <button class="btn-secondary" id="preview-button" type="button">Preview Berita</button>
@@ -56,10 +63,9 @@
     <div class="preview-card" id="preview-placeholder"><p>Isi preview akan muncul di sini.</p></div>
     <div class="preview-card hidden" id="preview-container">
         <h3 class="preview-title" id="preview-title"></h3>
+        <p><strong id="preview-category"></strong></p>
         <img alt="Preview Gambar" class="preview-image" id="preview-image"/>
-        <div class="preview-content" id="preview-content">
-            <iframe id="output-frame" style="width: 100%; height: 400px; border: 1px solid #ccc;"></iframe>
-        </div>
+        <div class="preview-content" id="preview-content"><iframe id="output-frame" style="width: 100%; height: 400px; border: 1px solid #ccc;"></iframe></div>
         <p><strong>Editor:</strong> <span id="preview-editor"></span></p>
     </div>
 </section>
@@ -67,124 +73,112 @@
 </div>
 
 <script>
-    const firebaseConfig = {
-      apiKey: "AIzaSyBOqC3MOxTPOabaKUtCPrmcIO8VvPDp5YA",
-      authDomain: "suhu-tius.firebaseapp.com",
-      projectId: "suhu-tius",
-      storageBucket: "suhu-tius.appspot.com",
-      messagingSenderId: "227886067791",
-      appId: "1:227886067791:web:f97f4bd58cc0b8c121ba3a"
-    };
+    const firebaseConfig = { apiKey: "AIzaSyBOqC3MOxTPOabaKUtCPrmcIO8VvPDp5YA", authDomain: "suhu-tius.firebaseapp.com", projectId: "suhu-tius", storageBucket: "suhu-tius.appspot.com", messagingSenderId: "227886067791", appId: "1:227886067791:web:f97f4bd58cc0b8c121ba3a" };
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
 
-    function insertAtCursor(myFieldName, myValue) {
-        const myField = document.getElementById(myFieldName);
-        if (myField.selectionStart || myField.selectionStart == '0') {
-            var startPos = myField.selectionStart;
-            var endPos = myField.selectionEnd;
-            myField.value = myField.value.substring(0, startPos) + myValue + myField.value.substring(endPos, myField.value.length);
-        } else {
-            myField.value += myValue;
+    async function loadCategories() {
+        const categoryContainer = document.getElementById('category-container');
+        try {
+            const snapshot = await db.collection('kategori').orderBy('nama').get();
+            if (snapshot.empty) {
+                categoryContainer.innerHTML = '<p>Belum ada kategori. Buat di Firebase Console.</p>';
+                return;
+            }
+            categoryContainer.innerHTML = '';
+            snapshot.forEach(doc => {
+                const categoryName = doc.data().nama;
+                const radioId = `cat-${doc.id}`;
+                const wrapper = document.createElement('div');
+                wrapper.className = 'radio-item';
+                wrapper.innerHTML = `<input type="radio" id="${radioId}" name="category" value="${categoryName}"><label for="${radioId}">${categoryName}</label>`;
+                categoryContainer.appendChild(wrapper);
+            });
+        } catch (error) {
+            console.error("Gagal memuat kategori: ", error);
+            categoryContainer.innerHTML = '<p style="color:red">Gagal memuat kategori.</p>';
         }
     }
 
     document.addEventListener('DOMContentLoaded', async () => {
+        // Muat kategori terlebih dahulu
+        await loadCategories();
+
         const params = new URLSearchParams(window.location.search);
         const editId = params.get('editId');
-
-        const newsForm = document.getElementById('news-form');
-        const formTitle = document.getElementById('form-title');
-        const submitButton = document.getElementById('submit-button');
-        const htmlCodeTextarea = document.getElementById('html-code');
-        const resetButton = document.getElementById('reset-button');
         
-        // --- MODE EDIT: Jika ada 'editId' di URL ---
         if (editId) {
-            formTitle.textContent = "Edit Berita";
-            submitButton.textContent = "Update Berita";
-            document.getElementById('page-title').textContent = "Edit Berita";
-
-            const docRef = db.collection('berita').doc(editId);
-            const doc = await docRef.get();
+            document.getElementById('form-title').textContent = "Edit Berita";
+            document.getElementById('submit-button').textContent = "Update Berita";
+            
+            const doc = await db.collection('berita').doc(editId).get();
             if (doc.exists) {
                 const data = doc.data();
                 document.getElementById('title').value = data.title || '';
+                document.getElementById('part').value = data.part || '';
                 document.getElementById('position').value = data.position || 'grid';
-                document.getElementById('category').value = data.category || '';
                 document.getElementById('editor_name').value = data.editor_name || '';
-                htmlCodeTextarea.value = data.content || '';
+                document.getElementById('html-code').value = data.content || '';
                 document.getElementById('image-url').value = data.imageUrl || '';
+
+                if (data.category) {
+                    const categoryRadio = document.querySelector(`input[name="category"][value="${data.category}"]`);
+                    if (categoryRadio) categoryRadio.checked = true;
+                }
             }
         }
-
-        // --- FUNGSI PENGIRIMAN DATA (Tambah Baru atau Update) ---
-        newsForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const newsData = {
-                title: document.getElementById('title').value,
-                position: document.getElementById('position').value,
-                category: document.getElementById('category').value,
-                editor_name: document.getElementById('editor_name').value,
-                content: htmlCodeTextarea.value,
-                imageUrl: document.getElementById('image-url').value
-            };
-
-            try {
-                if (editId) {
-                    await db.collection('berita').doc(editId).update(newsData);
-                    alert('Berita berhasil di-update!');
-                } else {
-                    newsData.createdAt = firebase.firestore.FieldValue.serverTimestamp();
-                    await db.collection('berita').add(newsData);
-                    alert('Berita berhasil dipublikasikan!');
-                }
-                window.location.href = 'dashboard.html';
-            } catch (error) {
-                alert('Terjadi kesalahan: ' + error.message);
-            }
-        });
-
-        // --- FUNGSI FITUR-FITUR LAMA ---
-        resetButton.addEventListener('click', () => newsForm.reset());
-
-        document.getElementById("upload-doc").addEventListener("change", (e) => {
-            const file = e.target.files[0];
-            if (!file) return;
-            const reader = new FileReader();
-            if (file.name.endsWith(".docx")) {
-                reader.onload = (evt) => mammoth.convertToHtml({ arrayBuffer: evt.target.result }).then(r => htmlCodeTextarea.value = r.value);
-                reader.readAsArrayBuffer(file);
-            } else {
-                reader.onload = (evt) => htmlCodeTextarea.value = evt.target.result;
-                reader.readAsText(file);
-            }
-        });
-
-        document.getElementById("preview-button").addEventListener("click", () => {
-            document.getElementById("preview-title").textContent = document.getElementById("title").value || '(Judul Kosong)';
-            document.getElementById("preview-image").src = document.getElementById("image-url").value || 'https://via.placeholder.com/600x300?text=Gambar+Berita';
-            document.getElementById("preview-editor").textContent = document.getElementById("editor_name").value || '(Editor Tidak Dicantumkan)';
-            const iframe = document.getElementById("output-frame");
-            iframe.srcdoc = htmlCodeTextarea.value;
-            document.getElementById("preview-container").classList.remove("hidden");
-            document.getElementById("preview-placeholder").classList.add("hidden");
-        });
-
-        // --- FUNGSI UPLOAD GAMBAR UTAMA DENGAN CLOUDINARY ---
-        document.getElementById('upload-to-cloudinary').addEventListener('click', () => {
-            const myWidget = cloudinary.createUploadWidget({
-                cloudName: 'nama_cloud_anda', // PENTING: Ganti dengan Cloud Name Anda
-                uploadPreset: 'nama_preset_anda' // PENTING: Ganti dengan Upload Preset Anda
-            }, (error, result) => { 
-                if (!error && result && result.event === "success") { 
-                    document.getElementById('image-url').value = result.info.secure_url;
-                    alert('Gambar berhasil di-upload!');
-                }
-            });
-            myWidget.open();
-        });
     });
+
+    // --- FUNGSI PENGIRIMAN DATA (Tambah Baru atau Update) ---
+    document.getElementById('news-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const selectedCategory = document.querySelector('input[name="category"]:checked');
+        const category = selectedCategory ? selectedCategory.value : '';
+        if (!category) {
+            alert('Silakan pilih kategori berita!');
+            return;
+        }
+
+        const newsData = {
+            title: document.getElementById('title').value,
+            part: document.getElementById('part').value, // <-- Data 'Jilid'
+            position: document.getElementById('position').value,
+            category: category,
+            editor_name: document.getElementById('editor_name').value,
+            content: document.getElementById('html-code').value,
+            imageUrl: document.getElementById('image-url').value
+        };
+        
+        const editId = new URLSearchParams(window.location.search).get('editId');
+        try {
+            if (editId) {
+                await db.collection('berita').doc(editId).update(newsData);
+                alert('Berita berhasil di-update!');
+            } else {
+                newsData.createdAt = firebase.firestore.FieldValue.serverTimestamp();
+                await db.collection('berita').add(newsData);
+                alert('Berita berhasil dipublikasikan!');
+            }
+            window.location.href = 'dashboard.html';
+        } catch (error) { alert('Terjadi kesalahan: ' + error.message); }
+    });
+    
+    // --- FUNGSI-FUNGSI LAINNYA ---
+    document.getElementById("preview-button").addEventListener("click", () => {
+        const title = document.getElementById("title").value || '(Judul Kosong)';
+        const part = document.getElementById("part").value;
+        const selectedCategory = document.querySelector('input[name="category"]:checked');
+        
+        document.getElementById("preview-title").textContent = part ? `${title} (${part})` : title;
+        document.getElementById("preview-category").textContent = selectedCategory ? selectedCategory.value : 'Kategori';
+        document.getElementById("preview-image").src = document.getElementById("image-url").value || 'https://via.placeholder.com/600x300?text=Gambar+Berita';
+        document.getElementById("preview-editor").textContent = document.getElementById("editor_name").value || '(Editor)';
+        document.getElementById("output-frame").srcdoc = document.getElementById("html-code").value;
+        document.getElementById("preview-container").classList.remove("hidden");
+        document.getElementById("preview-placeholder").classList.add("hidden");
+    });
+    
+    // (Sisa fungsi seperti upload doc, reset, cloudinary tidak berubah)
 </script>
 </body>
 </html>
