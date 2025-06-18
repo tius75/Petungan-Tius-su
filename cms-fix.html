@@ -8,10 +8,7 @@
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
 <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet"/>
 <style>
-    :root{--primary-color:#2c3e50;--secondary-color:#3498db;--accent-color:#e74c3c;--light-color:#ecf0f1;--dark-color:#2c3e50}body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:linear-gradient(135deg,#f5f7fa 0%,#c3cfe2 100%);color:var(--dark-color);margin:0;padding:0;min-height:100vh}.container{max-width:1200px;margin:0 auto;padding:20px}header{background:linear-gradient(to right,var(--primary-color),var(--secondary-color));color:white;padding:20px 0;text-align:center;border-radius:0 0 10px 10px;box-shadow:0 4px 12px rgba(0,0,0,0.1);margin-bottom:30px;display:flex;align-items:center;justify-content:center}.logo{height:50px;margin-right:15px}.main-content{display:grid;grid-template-columns:1fr;gap:30px}@media(min-width:992px){.main-content{grid-template-columns:1fr 1fr}}.form-section,.preview-section{background:white;border-radius:10px;padding:25px;box-shadow:0 5px 15px rgba(0,0,0,0.08)}.form-group{margin-bottom:25px}label{display:block;margin-bottom:8px;font-weight:600;color:var(--primary-color)}input,select,textarea{width:100%;padding:12px 15px;border:1px solid #ddd;border-radius:6px;font-size:16px;box-sizing:border-box;transition:all .3s}.button-group{display:flex;gap:15px;margin-top:20px}button{padding:12px 25px;border:none;border-radius:6px;font-size:16px;font-weight:600;cursor:pointer;transition:all .3s;flex:1}.btn-primary{background-color:var(--secondary-color);color:white}.btn-secondary{background-color:var(--light-color);color:var(--dark-color)}.btn-upload{background-color:#2ecc71;color:white}.preview-card{border:1px solid #eee;border-radius:8px;padding:20px;background:white;box-shadow:0 2px 10px rgba(0,0,0,0.05)}.preview-title{color:var(--primary-color);margin-top:0;border-bottom:2px solid var(--light-color);padding-bottom:10px}.preview-image{width:100%;max-height:300px;object-fit:cover;border-radius:6px;margin-bottom:15px}.hidden{display:none}
-    /* STYLE BARU UNTUK KATEGORI */
-    .radio-group{border:1px solid #ddd;padding:10px;border-radius:6px;max-height:150px;overflow-y:auto}.radio-item{display:flex;align-items:center;margin-bottom:8px}
-    .radio-item input[type="radio"]{width:auto;margin-right:10px}.radio-item label{margin-bottom:0;font-weight:normal}
+    :root{--primary-color:#2c3e50;--secondary-color:#3498db;--accent-color:#e74c3c;--light-color:#ecf0f1;--dark-color:#2c3e50}body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:linear-gradient(135deg,#f5f7fa 0%,#c3cfe2 100%);color:var(--dark-color);margin:0;padding:0;min-height:100vh}.container{max-width:1200px;margin:0 auto;padding:20px}header{background:linear-gradient(to right,var(--primary-color),var(--secondary-color));color:white;padding:20px 0;text-align:center;border-radius:0 0 10px 10px;box-shadow:0 4px 12px rgba(0,0,0,0.1);margin-bottom:30px;display:flex;align-items:center;justify-content:center}.logo{height:50px;margin-right:15px}.main-content{display:grid;grid-template-columns:1fr;gap:30px}@media(min-width:992px){.main-content{grid-template-columns:1fr 1fr}}.form-section,.preview-section{background:white;border-radius:10px;padding:25px;box-shadow:0 5px 15px rgba(0,0,0,0.08)}.form-group{margin-bottom:25px}label{display:block;margin-bottom:8px;font-weight:600;color:var(--primary-color)}input,select,textarea{width:100%;padding:12px 15px;border:1px solid #ddd;border-radius:6px;font-size:16px;box-sizing:border-box;transition:all .3s}.button-group{display:flex;gap:15px;margin-top:20px}button{padding:12px 25px;border:none;border-radius:6px;font-size:16px;font-weight:600;cursor:pointer;transition:all .3s;flex:1}.btn-primary{background-color:var(--secondary-color);color:white}.btn-secondary{background-color:var(--light-color);color:var(--dark-color)}.btn-upload{background-color:#2ecc71;color:white}.preview-card{border:1px solid #eee;border-radius:8px;padding:20px;background:white;box-shadow:0 2px 10px rgba(0,0,0,0.05)}.preview-title{color:var(--primary-color);margin-top:0;border-bottom:2px solid var(--light-color);padding-bottom:10px}.preview-image{width:100%;max-height:300px;object-fit:cover;border-radius:6px;margin-bottom:15px}.hidden{display:none}.radio-group{border:1px solid #ddd;padding:10px;border-radius:6px;max-height:150px;overflow-y:auto}.radio-item{display:flex;align-items:center;margin-bottom:8px}.radio-item input[type="radio"]{width:auto;margin-right:10px}.radio-item label{margin-bottom:0;font-weight:normal}
 </style>
 <script src="https://upload-widget.cloudinary.com/global/all.js" type="text/javascript"></script>
 <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
@@ -22,7 +19,7 @@
 
 <header>
     <svg class="logo" fill="white" height="50px" viewbox="0 0 24 24" width="50px"><path d="M0 0h24v24H0z" fill="none"></path><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"></path></svg>
-    <h1 id="page-title">CMS Berita Profesional</h1>
+    <h1 id="page-title">CMS Petungan Jawa</h1>
 </header>
 
 <div class="container">
@@ -31,23 +28,27 @@
     <h2 id="form-title">Formulir Berita</h2>
     <form id="news-form">
         <div class="form-group"><label for="title">Judul Berita</label><input id="title" required type="text"/></div>
-        
-        <!-- KOLOM BARU UNTUK JILID/BAGIAN -->
         <div class="form-group"><label for="part">Bagian / Jilid (Opsional)</label><input id="part" type="text" placeholder="Contoh: Bagian 1, atau biarkan kosong"></div>
-
         <div class="form-group"><label for="position">Posisi Tampil</label><select id="position" required><option value="grid">Grid (Normal)</option><option value="list">List (2 Kolom)</option></select></div>
-        
-        <!-- LAYOUT BARU UNTUK KATEGORI -->
         <div class="form-group">
             <label>Kategori Berita</label>
-            <div id="category-container" class="radio-group">
-                <p>Memuat kategori...</p>
-            </div>
+            <div id="category-container" class="radio-group"><p>Memuat kategori...</p></div>
         </div>
-        
         <div class="form-group"><label for="editor_name">Nama Editor</label><input id="editor_name" required type="text"/></div>
         <div class="form-group"><label>Gambar Utama</label><button class="btn-upload" id="upload-to-cloudinary" type="button">Upload Gambar Utama</button><input id="image-url" type="hidden"/></div>
-        <div class="form-group"><label for="html-code">Isi Berita (Bisa HTML)</label><textarea id="html-code" style="min-height: 250px; font-family: monospace;"></textarea></div>
+        
+        <div class="form-group">
+            <label for="html-code">Isi Berita (Bisa HTML)</label>
+            <div id="custom-toolbar" style="margin-bottom: 10px; padding: 5px; background-color: #f0f0f0; border-radius: 6px; display: flex; gap: 8px; flex-wrap: wrap;">
+                <button class="btn-secondary" type="button" onclick="insertAtCursor('html-code', '<h1>Judul</h1>')">H1</button>
+                <button class="btn-secondary" type="button" onclick="insertAtCursor('html-code', '<h2>Sub Judul</h2>')">H2</button>
+                <button class="btn-secondary" type="button" onclick="insertAtCursor('html-code', '<p>Paragraf</p>')">P</button>
+                <button class="btn-secondary" type="button" onclick="insertAtCursor('html-code', '<strong>Teks Tebal</strong>')">Tebal</button>
+                <button class="btn-secondary" type="button" onclick="insertAtCursor('html-code', '<em>Teks Miring</em>')">Miring</button>
+            </div>
+            <textarea id="html-code" style="min-height: 250px; font-family: monospace;"></textarea>
+        </div>
+        
         <div class="form-group"><label for="upload-doc">Atau Upload dari Dokumen (.docx, .txt)</label><input accept=".docx,.txt" id="upload-doc" type="file"/></div>
         <div class="button-group">
             <button class="btn-secondary" id="preview-button" type="button">Preview Berita</button>
@@ -65,7 +66,7 @@
         <h3 class="preview-title" id="preview-title"></h3>
         <p><strong id="preview-category"></strong></p>
         <img alt="Preview Gambar" class="preview-image" id="preview-image"/>
-        <div class="preview-content" id="preview-content"><iframe id="output-frame" style="width: 100%; height: 400px; border: 1px solid #ccc;"></iframe></div>
+        <div class="preview-content"><iframe id="output-frame" style="width: 100%; height: 400px; border: 1px solid #ccc;"></iframe></div>
         <p><strong>Editor:</strong> <span id="preview-editor"></span></p>
     </div>
 </section>
@@ -73,16 +74,54 @@
 </div>
 
 <script>
+    // Konfigurasi dan Inisialisasi Firebase
     const firebaseConfig = { apiKey: "AIzaSyBOqC3MOxTPOabaKUtCPrmcIO8VvPDp5YA", authDomain: "suhu-tius.firebaseapp.com", projectId: "suhu-tius", storageBucket: "suhu-tius.appspot.com", messagingSenderId: "227886067791", appId: "1:227886067791:web:f97f4bd58cc0b8c121ba3a" };
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
 
+    // FUNGSI HELPER UNTUK TOOLBAR
+    function insertAtCursor(myFieldName, myValue) {
+        const myField = document.getElementById(myFieldName);
+        if (document.selection) {
+            myField.focus();
+            const sel = document.selection.createRange();
+            sel.text = myValue;
+        } else if (myField.selectionStart || myField.selectionStart === 0) {
+            const startPos = myField.selectionStart;
+            const endPos = myField.selectionEnd;
+            myField.value = myField.value.substring(0, startPos) + myValue + myField.value.substring(endPos, myField.value.length);
+            myField.focus();
+        } else {
+            myField.value += myValue;
+        }
+    }
+
+    async function loadCategories() {
+        // ... (Fungsi ini tidak berubah)
+    }
+    
+    // --- SCRIPT UTAMA ---
+    document.addEventListener('DOMContentLoaded', async () => {
+        // ... (Kode untuk memuat kategori dan data edit tidak berubah)
+    });
+
+    // --- FUNGSI PENGIRIMAN DATA (TIDAK BERUBAH) ---
+    document.getElementById('news-form').addEventListener('submit', async (e) => {
+        // ... (Kode ini tidak berubah)
+    });
+    
+    // --- FUNGSI-FUNGSI LAINNYA (TIDAK BERUBAH) ---
+    document.getElementById("preview-button").addEventListener("click", () => {
+        // ... (Kode ini tidak berubah)
+    });
+    
+    // (Seluruh kode lengkap di bawah ini, tidak disingkat)
     async function loadCategories() {
         const categoryContainer = document.getElementById('category-container');
         try {
             const snapshot = await db.collection('kategori').orderBy('nama').get();
             if (snapshot.empty) {
-                categoryContainer.innerHTML = '<p>Belum ada kategori. Buat di Firebase Console.</p>';
+                categoryContainer.innerHTML = '<p>Belum ada kategori. Buat di Dashboard.</p>';
                 return;
             }
             categoryContainer.innerHTML = '';
@@ -101,7 +140,6 @@
     }
 
     document.addEventListener('DOMContentLoaded', async () => {
-        // Muat kategori terlebih dahulu
         await loadCategories();
 
         const params = new URLSearchParams(window.location.search);
@@ -120,7 +158,6 @@
                 document.getElementById('editor_name').value = data.editor_name || '';
                 document.getElementById('html-code').value = data.content || '';
                 document.getElementById('image-url').value = data.imageUrl || '';
-
                 if (data.category) {
                     const categoryRadio = document.querySelector(`input[name="category"][value="${data.category}"]`);
                     if (categoryRadio) categoryRadio.checked = true;
@@ -129,7 +166,6 @@
         }
     });
 
-    // --- FUNGSI PENGIRIMAN DATA (Tambah Baru atau Update) ---
     document.getElementById('news-form').addEventListener('submit', async (e) => {
         e.preventDefault();
         const selectedCategory = document.querySelector('input[name="category"]:checked');
@@ -141,7 +177,7 @@
 
         const newsData = {
             title: document.getElementById('title').value,
-            part: document.getElementById('part').value, // <-- Data 'Jilid'
+            part: document.getElementById('part').value,
             position: document.getElementById('position').value,
             category: category,
             editor_name: document.getElementById('editor_name').value,
@@ -163,7 +199,6 @@
         } catch (error) { alert('Terjadi kesalahan: ' + error.message); }
     });
     
-    // --- FUNGSI-FUNGSI LAINNYA ---
     document.getElementById("preview-button").addEventListener("click", () => {
         const title = document.getElementById("title").value || '(Judul Kosong)';
         const part = document.getElementById("part").value;
@@ -177,8 +212,37 @@
         document.getElementById("preview-container").classList.remove("hidden");
         document.getElementById("preview-placeholder").classList.add("hidden");
     });
-    
-    // (Sisa fungsi seperti upload doc, reset, cloudinary tidak berubah)
+
+    document.getElementById('reset-button').addEventListener('click', () => {
+        document.getElementById('news-form').reset();
+        document.getElementById('html-code').value = '';
+    });
+
+    document.getElementById("upload-doc").addEventListener("change", (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        if (file.name.endsWith(".docx")) {
+            reader.onload = (evt) => mammoth.convertToHtml({ arrayBuffer: evt.target.result }).then(r => document.getElementById('html-code').value = r.value);
+            reader.readAsArrayBuffer(file);
+        } else {
+            reader.onload = (evt) => document.getElementById('html-code').value = evt.target.result;
+            reader.readAsText(file);
+        }
+    });
+
+    document.getElementById('upload-to-cloudinary').addEventListener('click', () => {
+        const myWidget = cloudinary.createUploadWidget({
+            cloudName: 'nama_cloud_anda', // PENTING: Ganti
+            uploadPreset: 'nama_preset_anda' // PENTING: Ganti
+        }, (error, result) => { 
+            if (!error && result && result.event === "success") { 
+                document.getElementById('image-url').value = result.info.secure_url;
+                alert('Gambar berhasil di-upload! Link sudah tersimpan.');
+            }
+        });
+        myWidget.open();
+    });
 </script>
 </body>
 </html>
