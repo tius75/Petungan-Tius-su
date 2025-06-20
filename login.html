@@ -14,8 +14,7 @@
         button { width: 100%; padding: 12px; background: #3498db; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 1rem; }
         button:hover { background: #2980b9; }
         #error-message { color: red; margin-top: 10px; text-align: center; font-size: 0.9em; }
-        .toggle-form { text-align: center; margin-top: 15px; font-size: 0.9em; }
-        .toggle-form a { color: #3498db; cursor: pointer; text-decoration: none; }
+        /* .toggle-form class dan isinya dihapus karena tidak diperlukan lagi */
     </style>
 </head>
 <body>
@@ -34,10 +33,7 @@
             <button type="submit" id="submit-button">Login</button>
             <p id="error-message"></p>
         </form>
-        <div class="toggle-form">
-            <p id="toggle-text">Belum punya akun? <a id="toggle-link">Daftar di sini</a></p>
         </div>
-    </div>
 
     <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
@@ -57,20 +53,10 @@
         const emailInput = document.getElementById('email');
         const passwordInput = document.getElementById('password');
         const errorMessage = document.getElementById('error-message');
-        const toggleLink = document.getElementById('toggle-link');
-        const toggleText = document.getElementById('toggle-text');
+        // const toggleLink dan toggleText dihapus karena tidak diperlukan lagi
         const formTitle = document.getElementById('form-title');
         const submitButton = document.getElementById('submit-button');
-        let isLoginMode = true;
-
-        toggleLink.addEventListener('click', () => {
-            isLoginMode = !isLoginMode;
-            formTitle.textContent = isLoginMode ? 'Login' : 'Daftar Akun Baru';
-            submitButton.textContent = isLoginMode ? 'Login' : 'Daftar';
-            toggleText.innerHTML = isLoginMode ? 'Belum punya akun? <a id="toggle-link">Daftar di sini</a>' : 'Sudah punya akun? <a id="toggle-link">Login di sini</a>';
-            // Re-assign listener to the new link
-            document.getElementById('toggle-link').addEventListener('click', arguments.callee);
-        });
+        // Variabel isLoginMode tidak lagi diperlukan karena hanya ada mode login
 
         authForm.addEventListener('submit', (e) => {
             e.preventDefault();
@@ -78,27 +64,15 @@
             const password = passwordInput.value;
             errorMessage.textContent = '';
 
-            if (isLoginMode) {
-                // Proses Login
-                auth.signInWithEmailAndPassword(email, password)
-                    .then(userCredential => {
-                        // Jika sukses, arahkan ke halaman utama
-                        window.location.href = 'index.html';
-                    })
-                    .catch(error => {
-                        errorMessage.textContent = 'Gagal login: ' + error.message;
-                    });
-            } else {
-                // Proses Daftar
-                auth.createUserWithEmailAndPassword(email, password)
-                    .then(userCredential => {
-                        alert('Akun berhasil dibuat! Anda akan dialihkan...');
-                        window.location.href = 'index.html';
-                    })
-                    .catch(error => {
-                        errorMessage.textContent = 'Gagal mendaftar: ' + error.message;
-                    });
-            }
+            // Proses Login (hanya mode login yang dipertahankan)
+            auth.signInWithEmailAndPassword(email, password)
+                .then(userCredential => {
+                    // Jika sukses, arahkan ke halaman utama
+                    window.location.href = 'index.html';
+                })
+                .catch(error => {
+                    errorMessage.textContent = 'Gagal login: ' + error.message;
+                });
         });
     </script>
 </body>
