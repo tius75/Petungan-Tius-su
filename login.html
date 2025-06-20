@@ -3,88 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login / Daftar - Petungan Jawa</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <title>Login - Petungan Jawa</title>
     <style>
-        body {
-            font-family: 'Roboto', sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            background-color: #f4f7f6;
-            margin: 0;
-        }
-        .login-card {
-            background: #fff;
-            padding: 30px 40px;
-            border-radius: 8px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            width: 100%;
-            max-width: 350px;
-            box-sizing: border-box;
-        }
-        h1 {
-            text-align: center;
-            color: #2c3e50;
-            margin-top: 0;
-            margin-bottom: 25px;
-        }
-        .form-group {
-            margin-bottom: 20px;
-        }
-        label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 500;
-            color: #555;
-        }
-        input {
-            width: 100%;
-            padding: 12px;
-            box-sizing: border-box;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            font-size: 1rem;
-        }
-        button {
-            width: 100%;
-            padding: 12px;
-            background: #3498db;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 1.1rem;
-            font-weight: 500;
-            transition: background-color 0.2s;
-        }
-        button:hover {
-            background: #2980b9;
-        }
-        #error-message {
-            color: #e74c3c;
-            margin-top: 15px;
-            text-align: center;
-            font-size: 0.9em;
-            min-height: 1.2em;
-        }
-        .toggle-form {
-            text-align: center;
-            margin-top: 15px;
-            font-size: 0.9em;
-        }
-        .toggle-form a {
-            color: #3498db;
-            cursor: pointer;
-            text-decoration: none;
-            font-weight: 500;
-        }
-        .toggle-form a:hover {
-            text-decoration: underline;
-        }
+        body { font-family: sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; background-color: #f4f7f6; }
+        .login-card { background: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); width: 320px; }
+        h1 { text-align: center; color: #2c3e50; }
+        .form-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 5px; }
+        input { width: 100%; padding: 10px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 5px; }
+        button { width: 100%; padding: 12px; background: #3498db; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 1rem; }
+        button:hover { background: #2980b9; }
+        #error-message { color: red; margin-top: 10px; text-align: center; font-size: 0.9em; }
+        .toggle-form { text-align: center; margin-top: 15px; font-size: 0.9em; }
+        .toggle-form a { color: #3498db; cursor: pointer; text-decoration: none; }
     </style>
 </head>
 <body>
@@ -104,7 +35,7 @@
             <p id="error-message"></p>
         </form>
         <div class="toggle-form">
-            
+            <p id="toggle-text">Belum punya akun? <a id="toggle-link">Daftar di sini</a></p>
         </div>
     </div>
 
@@ -126,23 +57,20 @@
         const emailInput = document.getElementById('email');
         const passwordInput = document.getElementById('password');
         const errorMessage = document.getElementById('error-message');
+        const toggleLink = document.getElementById('toggle-link');
         const toggleText = document.getElementById('toggle-text');
         const formTitle = document.getElementById('form-title');
         const submitButton = document.getElementById('submit-button');
         let isLoginMode = true;
 
-        function setupToggle() {
-            const toggleLink = document.getElementById('toggle-link');
-            toggleLink.addEventListener('click', () => {
-                isLoginMode = !isLoginMode;
-                formTitle.textContent = isLoginMode ? 'Login' : 'Daftar Akun Baru';
-                submitButton.textContent = isLoginMode ? 'Login' : 'Daftar';
-                toggleText.innerHTML = isLoginMode ? 'Belum punya akun? <a id="toggle-link">Daftar di sini</a>' : 'Sudah punya akun? <a id="toggle-link">Login di sini</a>';
-                errorMessage.textContent = ''; // Hapus pesan error saat beralih
-                setupToggle(); // Atur ulang listener untuk link yang baru dibuat
-            });
-        }
-        setupToggle(); // Panggil fungsi saat pertama kali halaman dimuat
+        toggleLink.addEventListener('click', () => {
+            isLoginMode = !isLoginMode;
+            formTitle.textContent = isLoginMode ? 'Login' : 'Daftar Akun Baru';
+            submitButton.textContent = isLoginMode ? 'Login' : 'Daftar';
+            toggleText.innerHTML = isLoginMode ? 'Belum punya akun? <a id="toggle-link">Daftar di sini</a>' : 'Sudah punya akun? <a id="toggle-link">Login di sini</a>';
+            // Re-assign listener to the new link
+            document.getElementById('toggle-link').addEventListener('click', arguments.callee);
+        });
 
         authForm.addEventListener('submit', (e) => {
             e.preventDefault();
@@ -154,24 +82,21 @@
                 // Proses Login
                 auth.signInWithEmailAndPassword(email, password)
                     .then(userCredential => {
-                        // Jika sukses, arahkan ke halaman dashboard
-                        window.location.href = 'dashboard.html';
+                        // Jika sukses, arahkan ke halaman utama
+                        window.location.href = 'index.html';
                     })
                     .catch(error => {
-                        errorMessage.textContent = 'Gagal login. Periksa email dan password Anda.';
-                        console.error(error.message);
+                        errorMessage.textContent = 'Gagal login: ' + error.message;
                     });
             } else {
                 // Proses Daftar
                 auth.createUserWithEmailAndPassword(email, password)
                     .then(userCredential => {
-                        alert('Akun berhasil dibuat! Anda akan dialihkan ke dashboard.');
-                        // Jika sukses, arahkan ke halaman dashboard
-                        window.location.href = 'dashboard.html';
+                        alert('Akun berhasil dibuat! Anda akan dialihkan...');
+                        window.location.href = 'index.html';
                     })
                     .catch(error => {
                         errorMessage.textContent = 'Gagal mendaftar: ' + error.message;
-                        console.error(error.message);
                     });
             }
         });
