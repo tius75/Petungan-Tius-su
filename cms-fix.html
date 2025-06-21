@@ -233,8 +233,8 @@
 
     document.getElementById('upload-to-cloudinary').addEventListener('click', () => {
         const myWidget = cloudinary.createUploadWidget({
-            cloudName: 'nama_cloud_anda', // PENTING: Ganti
-            uploadPreset: 'nama_preset_anda' // PENTING: Ganti
+            cloudName: 'dmzgy5fpp', // PENTING: Ganti
+            uploadPreset: 'petungan-jawa' // PENTING: Ganti
         }, (error, result) => { 
             if (!error && result && result.event === "success") { 
                 document.getElementById('image-url').value = result.info.secure_url;
