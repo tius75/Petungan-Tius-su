@@ -1,0 +1,26 @@
+{
+  "name": "Dashboard Petungan Jawa",
+  "short_name": "Dashboard  Petungan Jawa",
+  "description": "Dashboard Petungan Jawa.",
+  "start_url": "./dashboard.html",
+  "display": "standalone",
+  "background_color": "#f0f8ff",
+  "theme_color": "#D30000",
+  "icons": [
+    {
+      "src": "favicon32x.png",
+      "sizes": "32x32",
+      "type": "image/png"
+    },
+    {
+      "src": "logo192x.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "logo512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
